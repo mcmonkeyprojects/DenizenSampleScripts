@@ -30,5 +30,6 @@ chat_pings_world:
                 # You might prefer: contains[regex:\b<def[player].name>\b]
                 # As that will test "word borders" (ie, don't match if the name is in the middle of a word)
                 - if <context.message.contains[<def[player].name>]>:
-                    - narrate targets:<def[player]> "<player.name><&b> mentioned you!"
+                    - narrate targets:<def[player]> "<&6><player.name><&b> mentioned you!"
                     - playsound <def[player]> sound:block_note_block_bell
+                    - toast targets:<def[player]> "<&6><player.name><&b> mentioned you!" frame:goal
