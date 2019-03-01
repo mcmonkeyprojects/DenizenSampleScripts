@@ -103,4 +103,4 @@ magic_sidebar_command:
         - flag player sidebar_disabled
         - narrate "<&b>Sidebar disabled."
         - wait 1
-        - sidebar remove players:<player> 
+        - sidebar remove players:<player>
