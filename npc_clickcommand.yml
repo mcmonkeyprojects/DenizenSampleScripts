@@ -1,0 +1,78 @@
+# +--------------------
+# |
+# | N P C   C l i c k C o m m a n d
+# |
+# | A drop-in helper for making NPCs that execute commands.
+# |
+# +----------------------
+#
+# @author mcmonkey
+# @date 2019/03/01
+# @denizen-build DEV-670
+# @script-version 1.0
+#
+# Installation:
+# Just put the script in your scripts folder and reload.
+#
+# Usage:
+# Select an NPC and use command "/npccommand"
+# You can do:
+# /npccommand               - Display help info
+# /npccommand off           - Disables command running
+# /npccommand set [command] - Sets the NPC to run a specific command
+# /npccommand add [command] - Adds a command for the NPC to randomly execute
+# You can prefix commands with "player:" to execute as the player, otherwise will execute as the server.
+# Add multiple commands to execute at the same time via " - "
+# For example: /npccommand set player:summon lightning_bolt - say "shocking!" - player:summon bat
+#
+# You can use tags. For example: /npccommand add effect give <player.name> speed
+#
+# Players can right-click the NPC at any time to have a command run.
+#
+# ---------------------------- END HEADER ----------------------------
+
+npc_command_assignment:
+    type: assignment
+    debug: false
+    actions:
+        on assignment:
+        - trigger name:click state:true
+        on click:
+        - foreach "<npc.flag[commands].random.split[ - ].escape_contents>" as:command:
+            - if <def[command].unescaped.starts_with[player:]>:
+                - execute as_player <parse:<def[command].unescaped.after[player:]>>
+            - else:
+                - execute as_server <parse:<def[command].unescaped>>
+
+npc_command_command:
+    type: command
+    name: npccommand
+    usage: /npccommand
+    description: Makes an NPC execute commands!
+    permission: script.npccommand
+    script:
+    - if !<list[set|add|off].contains[<context.args.get[1]||null>]>:
+        - narrate "<&c>/npccommand off - Disable command running"
+        - narrate "<&c>/npccommand set [command] - Set the command to run"
+        - narrate "<&c>/npccommand add [command] - Add a single command (to choose randomly from many)"
+        - narrate "<&c>Use 'player<&co>' to run as player, otherwise runs as server. Separate multiple commands to execute at once with ' - '."
+        - narrate "<&c>For example: /npccommand set player:summon lightning_bolt - say 'shocking!' - player:summon bat"
+        - queue clear
+    - if <player.selected_npc||null> == null:
+        - narrate "<&c>Please select an NPC!"
+        - queue clear
+    - if <context.args.get[1]> == "off":
+        - if <npc.script.name||null> != npc_command_assignment:
+            - narrate "<&c>That NPC is not a command runner."
+            - queue clear
+        - assignment remove
+        - flag <npc> commands:!
+        - narrate "<&a>Successfully removed command running."
+        - queue clear
+    - assignment set script:npc_command_assignment npc:<player.selected_npc>
+    - if <context.args.get[1]> == "set":
+        - flag <player.selected_npc> commands:<context.raw_args.after[set].trim>
+        - narrate "<&a>Command set."
+    - else if <context.args.get[1]> == "add":
+        - flag <player.selected_npc> commands:->:<context.raw_args.after[add].trim>
+        - narrate "<&a>Command added."
