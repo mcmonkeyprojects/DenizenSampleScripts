@@ -1,0 +1,43 @@
+# +----------------------
+# | T o r c h  L i g h t
+# |
+# | Light from your torch without placing it!
+# +----------------------
+#
+# @author mcmonkey
+# @date 2019/03/01
+# @denizen-build DEV-670
+# @script-version 2.0
+#
+# Installation:
+# Just put the script in your scripts folder and reload.
+#
+# Warning:
+# On the current version of Denizen, using the light command rapidly can cause significant amounts of lag.
+#
+# Usage:
+# Hold a torch and run around! Also works in your offhand!
+#
+# ---------------------------- END HEADER ----------------------------
+
+torch_light_world:
+    type: world
+    debug: false
+    subpaths:
+        reset:
+        - if <player.has_flag[torch_light_loc]>:
+          - light <player.flag[torch_light_loc]> reset
+          - flag player torch_light_loc:!
+        update:
+        - wait 1t
+        - inject locally subpaths.reset
+        - if <player.item_in_hand.material.name||null>|<player.item_in_offhand.material.name||null> contains torch:
+          - light <player.location.add[0,1,0]> 14
+          - flag player torch_light_loc:<player.location.add[0,1,0]>
+    events:
+        on player holds item:
+        - inject locally subpaths.update
+        on player steps on block:
+        - inject locally subpaths.update
+        on player quits:
+        - inject locally subpaths.reset
