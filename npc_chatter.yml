@@ -45,9 +45,9 @@ npc_chatter_command:
     permission: script.npcchatter
     script:
     - if !<list[set|add|off].contains[<context.args.get[1]||null>]>:
-        - narrate "<&c>/npcchat off - Disable chatterishness"
-        - narrate "<&c>/npcchat set [message] - Set the message"
-        - narrate "<&c>/npcchat add [message] - Add a single message (to choose randomly from many)"
+        - narrate "<&c>/npcchatter off - Disable chatterishness"
+        - narrate "<&c>/npcchatter set [message] - Set the message"
+        - narrate "<&c>/npcchatter add [message] - Add a single message (to choose randomly from many)"
         - queue clear
     - if <player.selected_npc||null> == null:
         - narrate "<&c>Please select an NPC!"
