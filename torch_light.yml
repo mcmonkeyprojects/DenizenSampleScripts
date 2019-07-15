@@ -7,9 +7,9 @@
 # +----------------------
 #
 # @author mcmonkey
-# @date 2019/03/01
-# @denizen-build DEV-670
-# @script-version 2.0
+# @date 2019/07/15
+# @denizen-build DEV-950
+# @script-version 2.5
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -26,9 +26,12 @@ torch_light_world:
     type: world
     debug: false
     subpaths:
+        reset_delayed:
+          - light <[1]> reset
         reset:
         - if <player.has_flag[torch_light_loc]>:
-          - light <player.flag[torch_light_loc]> reset
+          - light <player.flag[torch_light_loc]> 0
+          - run locally subpaths.reset_delayed def:<player.flag[torch_light_loc]> delay:2t
           - flag player torch_light_loc:!
         update:
         - wait 1t
