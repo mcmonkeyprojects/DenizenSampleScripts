@@ -19,8 +19,8 @@
 # You can do:
 # /npcchatter              - Display help info
 # /npcchatter off          - Disables chatterishness
-# /npcchater set [message] - Sets the NPC to say a specific message
-# /npcchater add [message] - Adds a message for the NPC to randomly say
+# /npcchatter set [message] - Sets the NPC to say a specific message
+# /npcchatter add [message] - Adds a message for the NPC to randomly say
 #
 # You can use tags. For example: /npcchatter add Hello <&b><player.name>!
 #
