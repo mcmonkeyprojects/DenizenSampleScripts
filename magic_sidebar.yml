@@ -92,6 +92,7 @@ magic_sidebar_lines_proc:
 
 magic_sidebar_command:
     type: command
+    debug: false
     name: sidebar
     usage: /sidebar
     description: Toggles your sidebar on or off.

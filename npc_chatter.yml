@@ -39,6 +39,7 @@ npc_chatter_assignment:
 
 npc_chatter_command:
     type: command
+    debug: false
     name: npcchatter
     usage: /npcchatter set [message]
     description: Makes an NPC be chatty!

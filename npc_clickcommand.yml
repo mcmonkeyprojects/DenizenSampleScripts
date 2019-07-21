@@ -46,6 +46,7 @@ npc_command_assignment:
 
 npc_command_command:
     type: command
+    debug: false
     name: npccommand
     usage: /npccommand
     description: Makes an NPC execute commands!
