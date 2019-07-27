@@ -111,13 +111,13 @@ cuboid_tool_world:
     debug: false
     events:
         # Basic usage logic
-        on player left clicks block with:cuboid_tool_item:
+        on player left clicks block with cuboid_tool_item:
         - if <context.location.material.name||air> == air:
             - stop
         - flag player ctool_selection:cu@<context.location>|<context.location>
         - inject cuboid_tool_status_task
         - determine cancelled
-        on player right clicks block with:cuboid_tool_item:
+        on player right clicks block with cuboid_tool_item:
         - if <context.location.material.name||air> == air:
             - stop
         - if <player.has_flag[ctool_selection]>:
