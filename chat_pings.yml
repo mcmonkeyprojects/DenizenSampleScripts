@@ -8,7 +8,7 @@
 #
 # @author mcmonkey
 # @date 2019/03/01
-# @denizen-build DEV-670
+# @denizen-build REL-1679
 # @script-version 2.0
 #
 # Installation:
@@ -27,9 +27,9 @@ chat_pings_world:
         # Pure-tag pre-check to avoid unneeded processing
         - if <context.message.contains_any[<server.list_online_players.parse[name]>]>:
             - foreach <server.list_online_players> as:player:
-                # You might prefer: contains[regex:\b<def[player].name>\b]
+                # You might prefer: contains[regex:\b<[player].name>\b]
                 # As that will test "word borders" (ie, don't match if the name is in the middle of a word)
-                - if <context.message.contains[<def[player].name>]>:
-                    - narrate targets:<def[player]> "<&6><player.name><&b> mentioned you!"
-                    - playsound <def[player]> sound:block_note_block_bell
-                    - toast targets:<def[player]> "<&6><player.name><&b> mentioned you!" frame:goal
+                - if <context.message.contains[<[player].name>]>:
+                    - narrate targets:<[player]> "<&6><player.name><&b> mentioned you!"
+                    - playsound <[player]> sound:block_note_block_bell
+                    - toast targets:<[player]> "<&6><player.name><&b> mentioned you!" frame:goal

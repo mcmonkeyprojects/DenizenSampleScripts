@@ -8,7 +8,7 @@
 #
 # @author mcmonkey
 # @date 2019/03/01
-# @denizen-build DEV-670
+# @denizen-build REL-1679
 # @script-version 1.0
 #
 # Installation:
@@ -39,10 +39,10 @@ npc_command_assignment:
         - trigger name:click state:true
         on click:
         - foreach "<npc.flag[commands].random.split[ - ].escape_contents>" as:command:
-            - if <def[command].unescaped.starts_with[player:]>:
-                - execute as_player <parse:<def[command].unescaped.after[player:]>>
+            - if <[command].unescaped.starts_with[player:]>:
+                - execute as_player <parse:<[command].unescaped.after[player:]>>
             - else:
-                - execute as_server <parse:<def[command].unescaped>>
+                - execute as_server <parse:<[command].unescaped>>
 
 npc_command_command:
     type: command

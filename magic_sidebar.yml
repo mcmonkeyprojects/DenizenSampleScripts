@@ -6,7 +6,7 @@
 #
 # @author mcmonkey
 # @date 2019/03/01
-# @denizen-build DEV-670
+# @denizen-build REL-1679
 # @script-version 1.0
 #
 # Installation:
@@ -45,50 +45,50 @@ magic_sidebar_world:
     events:
         on delta time secondly:
         - define per_second <script[magic_sidebar_config].yaml_key[per_second]>
-        - define wait_time <el@1.div[<def[per_second]>]>s
+        - define wait_time <el@1.div[<[per_second]>]>s
         - define players <server.list_online_players.filter[has_flag[sidebar_disabled].not]>
         - define title <script[magic_sidebar_config].yaml_key[title]>
-        - repeat <def[per_second]>:
-            - sidebar title:<parse:<def[title]>> values:<proc[magic_sidebar_lines_proc]> players:<def[players]> per_player
-            - wait <def[wait_time]>
+        - repeat <[per_second]>:
+            - sidebar title:<parse:<[title]>> values:<proc[magic_sidebar_lines_proc]> players:<[players]> per_player
+            - wait <[wait_time]>
 
 magic_sidebar_lines_proc:
     type: procedure
     debug: false
     script:
     - define list <script[magic_sidebar_config].yaml_key[lines]>
-    - foreach <def[list]> as:line:
-        - define list_index <def[loop_index]>
-        - define line <parse:<def[line]>>
-        - if <def[line].starts_with[<&lb>scroll<&co>]>:
-            - define width <def[line].after[<&co>].before[/]>
-            - define rate <def[line].after[/].before[<&rb>]>
-            - define line <def[line].after[<&rb>]>
-            - define index <server.current_time_millis.div[1000].mul[<def[rate]>].round.mod[<def[line].strip_color.length>].add[1]>
-            - define end <def[index].add[<def[width]>]>
-            - repeat <def[line].length> as:charpos:
-                - if <def[line].char_at[<def[charpos]>]> == <&ss>:
-                    - define index <def[index].add[2]>
-                - if <def[index]> <= <def[charpos]>:
+    - foreach <[list]> as:line:
+        - define list_index <[loop_index]>
+        - define line <parse:<[line]>>
+        - if <[line].starts_with[<&lb>scroll<&co>]>:
+            - define width <[line].after[<&co>].before[/]>
+            - define rate <[line].after[/].before[<&rb>]>
+            - define line <[line].after[<&rb>]>
+            - define index <server.current_time_millis.div[1000].mul[<[rate]>].round.mod[<[line].strip_color.length>].add[1]>
+            - define end <[index].add[<[width]>]>
+            - repeat <[line].length> as:charpos:
+                - if <[line].char_at[<[charpos]>]> == <&ss>:
+                    - define index <[index].add[2]>
+                - if <[index]> <= <[charpos]>:
                     - repeat stop
-            - define start_color <def[line].substring[0,<def[index]>].last_color>
-            - if <def[end]> > <def[line].strip_color.length>:
-                - define end <def[end].sub[<def[line].strip_color.length>]>
-                - repeat <def[line].length> as:charpos:
-                    - if <def[line].char_at[<def[charpos]>]> == <&ss>:
-                        - define end <def[end].add[2]>
-                    - if <def[end]> < <def[charpos]>:
+            - define start_color <[line].substring[0,<[index]>].last_color>
+            - if <[end]> > <[line].strip_color.length>:
+                - define end <[end].sub[<[line].strip_color.length>]>
+                - repeat <[line].length> as:charpos:
+                    - if <[line].char_at[<[charpos]>]> == <&ss>:
+                        - define end <[end].add[2]>
+                    - if <[end]> < <[charpos]>:
                         - repeat stop
-                - define line "<def[start_color]><def[line].substring[<def[index]>]> <&f><def[line].substring[0,<def[end]>]>"
+                - define line "<[start_color]><[line].substring[<[index]>]> <&f><[line].substring[0,<[end]>]>"
             - else:
-                - repeat <def[line].length> as:charpos:
-                    - if <def[line].char_at[<def[charpos]>]> == <&ss>:
-                        - define end <def[end].add[2]>
-                    - if <def[end]> < <def[charpos]>:
+                - repeat <[line].length> as:charpos:
+                    - if <[line].char_at[<[charpos]>]> == <&ss>:
+                        - define end <[end].add[2]>
+                    - if <[end]> < <[charpos]>:
                         - repeat stop
-                - define line "<def[start_color]><def[line].substring[<def[index]>,<def[end]>]>"
-        - define list <def[list].set[<def[line]>].at[<def[list_index]>]>
-    - determine <def[list]>
+                - define line "<[start_color]><[line].substring[<[index]>,<[end]>]>"
+        - define list <[list].set[<[line]>].at[<[list_index]>]>
+    - determine <[list]>
 
 magic_sidebar_command:
     type: command
