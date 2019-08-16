@@ -7,9 +7,9 @@
 # +----------------------
 #
 # @author mcmonkey
-# @date 2019/03/01
-# @denizen-build REL-1679
-# @script-version 1.0
+# @date 2019/08/16
+# @denizen-build REL-1681
+# @script-version 1.2
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -22,6 +22,7 @@
 # /npccommand set [command] - Sets the NPC to run a specific command
 # /npccommand add [command] - Adds a command for the NPC to randomly execute
 # You can prefix commands with "player:" to execute as the player, otherwise will execute as the server.
+# Use prefix "op:" to execute the command as the player (with operator privileges).
 # Add multiple commands to execute at the same time via " - "
 # For example: /npccommand set player:summon lightning_bolt - say "shocking!" - player:summon bat
 #
@@ -41,6 +42,8 @@ npc_command_assignment:
         - foreach "<npc.flag[commands].random.split[ - ].escape_contents>" as:command:
             - if <[command].unescaped.starts_with[player:]>:
                 - execute as_player <parse:<[command].unescaped.after[player:]>>
+            - else if <[command].unescaped.starts_with[op:]>:
+                - execute as_op <parse:<[command].unescaped.after[op:]>>
             - else:
                 - execute as_server <parse:<[command].unescaped>>
 
