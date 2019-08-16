@@ -9,10 +9,13 @@
 # @author mcmonkey
 # @date 2019/08/16
 # @denizen-build REL-1681
-# @script-version 2.7
+# @script-version 2.8
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
+#
+# Configuration
+# You can add extra items and/or change their levels at the marked section below.
 #
 # Usage:
 # Hold a torch and run around! Also works in your offhand!
@@ -23,16 +26,22 @@ torch_light_world:
     type: world
     debug: false
     items:
-    # Add more material names here
+    # =============== Add more material names here ===============
     - torch
     - lantern
     - redstone_torch
     - glowstone
+    - glowstone_dust
+    levels:
+      # =============== Add alternate levels here ===============
+      redstone_torch: 8
+      glowstone_dust: 6
+    # =============== end of editable section ===============
     subpaths:
         reset_delayed:
           - light <[1]> reset
         reset:
-        - if <player.flag[torch_light_loc].simple||null> == <[loc].simple>:
+        - if <player.flag[torch_light_loc].as_location.simple||null> == <[loc].simple>:
           - stop
         - if <player.has_flag[torch_light_loc]>:
           - run locally subpaths.reset_delayed def:<player.flag[torch_light_loc]> delay:2t
@@ -41,9 +50,11 @@ torch_light_world:
         - wait 1t
         - define loc <player.location.add[0,1,0]>
         - inject locally subpaths.reset
-        - define held <list[<player.item_in_hand.material.name||null>|<player.item_in_offhand.material.name||null>]>
-        - if <[held].contains_any[<script.yaml_key[items]>]>:
-          - light <[loc]> 14
+        - if <script.yaml_key[items].contains[<player.item_in_hand.material.name||null>]>:
+          - light <[loc]> <script.yaml_key[levels.<player.item_in_hand.material.name>]||14>
+          - flag player torch_light_loc:<[loc]>
+        - else if <script.yaml_key[items].contains[<player.item_in_offhand.material.name||null>]>:
+          - light <[loc]> <script.yaml_key[levels.<player.item_in_offhand.material.name>]||14>
           - flag player torch_light_loc:<[loc]>
     events:
         on player holds item:
