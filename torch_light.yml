@@ -9,7 +9,7 @@
 # @author mcmonkey
 # @date 2019/08/16
 # @denizen-build REL-1681
-# @script-version 2.6
+# @script-version 2.7
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -22,6 +22,12 @@
 torch_light_world:
     type: world
     debug: false
+    items:
+    # Add more material names here
+    - torch
+    - lantern
+    - redstone_torch
+    - glowstone
     subpaths:
         reset_delayed:
           - light <[1]> reset
@@ -35,7 +41,8 @@ torch_light_world:
         - wait 1t
         - define loc <player.location.add[0,1,0]>
         - inject locally subpaths.reset
-        - if <player.item_in_hand.material.name||null>|<player.item_in_offhand.material.name||null> contains torch:
+        - define held <list[<player.item_in_hand.material.name||null>|<player.item_in_offhand.material.name||null>]>
+        - if <[held].contains_any[<script.yaml_key[items]>]>:
           - light <[loc]> 14
           - flag player torch_light_loc:<[loc]>
     events:
