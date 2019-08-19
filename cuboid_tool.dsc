@@ -7,9 +7,9 @@
 # +----------------------
 #
 # @author mcmonkey
-# @date 2019/07/25
-# @denizen-build REL-1679
-# @script-version 1.0
+# @date 2019/08/18
+# @denizen-build REL-1681
+# @script-version 1.1
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -131,7 +131,7 @@ cuboid_tool_world:
         - remove <context.entity>
         on player clicks in inventory with cuboid_tool_item:
         - inject locally abuse_prevention_click
-        on player drags in inventory with cuboid_tool_item:
+        on player drags cuboid_tool_item in inventory:
         - inject locally abuse_prevention_click
     abuse_prevention_click:
         - if <context.inventory.inventory_type> == player:
