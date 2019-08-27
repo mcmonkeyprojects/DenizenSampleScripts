@@ -17,8 +17,8 @@
 # Usage:
 # Select an NPC and use command "/npcchatter"
 # You can do:
-# /npcchatter              - Display help info
-# /npcchatter off          - Disables chatterishness
+# /npcchatter               - Display help info
+# /npcchatter off           - Disables chatterishness
 # /npcchatter set [message] - Sets the NPC to say a specific message
 # /npcchatter add [message] - Adds a message for the NPC to randomly say
 #
