@@ -96,7 +96,7 @@ cuboid_tool_status_task:
     type: task
     debug: false
     script:
-    - define cuboid <player.flag[ctool_selection]>
+    - define cuboid <player.flag[ctool_selection].as_cuboid>
     - define min "<aqua><[cuboid].min.simple.replace[,].with[<gray>, <aqua>]><green>"
     - define max "<aqua><[cuboid].max.simple.replace[,].with[<gray>, <aqua>]><green>"
     - define size "<aqua><[cuboid].size.simple.replace[,].with[<gray>, <aqua>]><green>"
