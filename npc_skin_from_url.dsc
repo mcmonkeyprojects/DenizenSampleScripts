@@ -17,11 +17,14 @@
 #
 # Usage:
 # Type command: /npc skin --url (url here)
-# For slim ("Alex") model NPCs, use /npc skin --url (url here) slim
+#
+# If you have a local file you want to use,
+# consider uploading it to an image host like imgur.
+# If you do, be sure to use the direct image URL (ends with ".png") as opposed to the album URL.
 #
 # Examples:
-# /npc skin --url https://i.imgur.com/Pgu9R1s.png
-# /npc skin --url https://i.imgur.com/6l1i0uB.png slim
+# /npc skin --url https://gamepedia.cursecdn.com/minecraft_gamepedia/3/37/Steve_skin.png
+# /npc skin --url https://gamepedia.cursecdn.com/minecraft_gamepedia/f/f2/Alex_skin.png
 #
 # ---------------------------- END HEADER ----------------------------
 
@@ -37,7 +40,6 @@ skin_url_handler:
         - determine passively fulfilled
 
         - define url <context.args.get[3]||null>
-        - define model <context.args.get[4].to_lowercase||empty>
         - if <context.server>:
             - define npc <server.selected_npc||null>
         - else:
@@ -52,11 +54,8 @@ skin_url_handler:
         - if <[url]> == null:
             - narrate "<&a>You must specify a valid skin URL."
             - stop
-        - if <[model]> != empty && <[model]> != slim:
-            - narrate "<&e><[model]><&a> is not a valid skin model. Must be <&e>slim<&a> or empty."
-            - stop
         - narrate "<&a>Retrieving the requested skin..."
-        - run skin_url_task def:<[url]>|<[model]> save:newQueue
+        - run skin_url_task def:<[url]> save:newQueue
         - while <entry[newQueue].created_queue.state> == running:
             - if <[loop_index]> > 20:
                 - queue <entry[newQueue].created_queue> clear
@@ -77,11 +76,8 @@ skin_url_handler:
 
 skin_url_task:
     type: task
-    debug: false
-    definitions: url|model
+    #debug: false
+    definitions: url
     script:
-    - define requestUrl "https://api.mineskin.org/generate/url"
-    - if <[model]> == slim:
-        - define requestUrl "<[requestUrl]>?model=slim"
-    - ~webget <[requestUrl]> "post:url=<[url]>" timeout:5s save:webResult
+    - ~webget "https://api.mineskin.org/generate/url" post:url=<[url]> timeout:5s save:webResult
     - determine <entry[webResult].result||null>
