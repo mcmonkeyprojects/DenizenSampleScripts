@@ -30,62 +30,62 @@ skin_url_handler:
     debug: false
     events:
         on npc command:
-            - if <c.args.get[1].to_lowercase||null> != skin:
-                - queue clear
-            - if !<li@-u|--url.contains[<c.args.get[2].to_lowercase||null>]>:
-                - queue clear
+            - if <context.args.get[1].to_lowercase||null> != skin:
+                - stop
+            - if !<li@-u|--url.contains[<context.args.get[2].to_lowercase||null>]>:
+                - stop
             - determine passively fulfilled
 
-            - define url <c.args.get[3]||null>
-            - define model <c.args.get[4].to_lowercase||empty>
-            - if <c.server>:
+            - define url <context.args.get[3]||null>
+            - define model <context.args.get[4].to_lowercase||empty>
+            - if <context.server>:
                 - define npc <server.selected_npc||null>
             - else:
                 - define npc <player.selected_npc||null>
 
-            - if <def[npc]> == null:
+            - if <[npc]> == null:
                 - narrate "<&a>You must have an NPC selected to execute that command."
-                - queue clear
-            - if <def[npc].entity_type> != PLAYER:
+                - stop
+            - if <[npc].entity_type> != PLAYER:
                 - narrate "<&a>You must have a player-type NPC selected."
-                - queue clear
-            - if <def[url]> == null:
+                - stop
+            - if <[url]> == null:
                 - narrate "<&a>You must specify a valid skin URL."
-                - queue clear
-            - if <def[model]> != empty && <def[model]> != slim:
-                - narrate "<&e><def[model]><&a> is not a valid skin model. Must be <&e>slim<&a> or empty."
-                - queue clear
+                - stop
+            - if <[model]> != empty && <[model]> != slim:
+                - narrate "<&e><[model]><&a> is not a valid skin model. Must be <&e>slim<&a> or empty."
+                - stop
 
             - narrate "<&a>Retrieving the requested skin..."
             - define key <util.random.uuid>
 
             # Our own custom ~5s timeout since the builtin hangs
-            - run skin_url_task def:<def[key]>|<def[url]>|<def[model]> id:<def[key]> instantly
-            - while <queue.exists[<def[key]>]>:
-                - if <def[loop_index]> > 20:
-                    - queue q@<def[key]> clear
+            - run skin_url_task def:<[key]>|<[url]>|<[model]> id:<[key]> instantly
+            - while <queue.exists[<[key]>]>:
+                - if <[loop_index]> > 20:
+                    - queue q@<[key]> clear
                     - narrate "<&a>The request timed out. Is the url valid?"
-                    - queue clear
+                    - stop
                 - wait 5t
 
             # Quick sanity check - ideally this should never be true
-            - if !<server.has_flag[<def[key]>]>:
-                - queue clear
+            - if !<server.has_flag[<[key]>]>:
+                - stop
 
-            - if <server.flag[<def[key]>]> == null:
+            - if <server.flag[<[key]>]> == null:
                 - narrate "<&a>Failed to retrieve the skin from the provided link. Is the url valid?"
-                - flag server <def[key]>:!
-                - queue clear
+                - flag server <[key]>:!
+                - stop
 
-            - yaml loadtext:<server.flag[<def[key]>]> id:response
+            - yaml loadtext:<server.flag[<[key]>]> id:response
 
             - if !<yaml[response].contains[data.texture]>:
                 - narrate "<&a>An unexpected error occurred while retrieving the skin data. Please try again."
             - else:
-                - narrate "<&e><def[npc].name><&a>'s skin set to <&e><def[url]><&a>."
-                - adjust <def[npc]> skin_blob:<yaml[response].read[data.texture.value]>;<yaml[response].read[data.texture.signature]>
+                - narrate "<&e><[npc].name><&a>'s skin set to <&e><[url]><&a>."
+                - adjust <[npc]> skin_blob:<yaml[response].read[data.texture.value]>;<yaml[response].read[data.texture.signature]>
 
-            - flag server <def[key]>:!
+            - flag server <[key]>:!
             - yaml unload id:response
 
 skin_url_task:
@@ -94,7 +94,7 @@ skin_url_task:
     definitions: key|url|model
     script:
         - define req "https://api.mineskin.org/generate/url"
-        - if <def[model]> == slim:
-            - define req "<def[req]>?model=slim"
-        - ~webget <def[req]> "post:url=<def[url]>" timeout:5s save:res
-        - flag server <def[key]>:<entry[res].result||null>
+        - if <[model]> == slim:
+            - define req "<[req]>?model=slim"
+        - ~webget <[req]> "post:url=<[url]>" timeout:5s save:res
+        - flag server <[key]>:<entry[res].result||null>
