@@ -33,9 +33,9 @@ skin_url_handler:
     debug: false
     events:
         on npc command:
-        - if <context.args.get[1].to_lowercase||null> != skin:
+        - if <context.args.get[1]||null> != skin:
             - stop
-        - if !<li@-u|--url.contains[<context.args.get[2].to_lowercase||null>]>:
+        - if !<li@-u|--url.contains[<context.args.get[2]||null>]>:
             - stop
         - determine passively fulfilled
 
@@ -76,7 +76,7 @@ skin_url_handler:
 
 skin_url_task:
     type: task
-    #debug: false
+    debug: false
     definitions: url
     script:
     - ~webget "https://api.mineskin.org/generate/url" post:url=<[url]> timeout:5s save:webResult
