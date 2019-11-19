@@ -33,27 +33,25 @@ skin_url_handler:
     debug: false
     events:
         on npc command:
-        - if <context.args.get[1]||null> != skin:
-            - stop
-        - if !<li@-u|--url.contains[<context.args.get[2]||null>]>:
+        - if <context.args.get[1]||null> != skin || <context.args.get[2]||null> != "--url":
             - stop
         - determine passively fulfilled
-
-        - define url <context.args.get[3]||null>
         - if <context.server>:
             - define npc <server.selected_npc||null>
         - else:
             - define npc <player.selected_npc||null>
-
         - if <[npc]> == null:
-            - narrate "<&a>You must have an NPC selected to execute that command."
+            - narrate "<&c>You must have an NPC selected to execute that command."
             - stop
         - if <[npc].entity_type> != PLAYER:
-            - narrate "<&a>You must have a player-type NPC selected."
+            - narrate "<&c>You must have a player-type NPC selected."
             - stop
+        - define url <context.args.get[3]||null>
         - if <[url]> == null:
-            - narrate "<&a>You must specify a valid skin URL."
+            - narrate "<&c>You must specify a valid skin URL."
             - stop
+        - if !<[url].ends_with[.png]>:
+            - narrate "<&c>That URL isn't likely to be valid. Make sure you have a direct image URL, ending with '.png'."
         - narrate "<&a>Retrieving the requested skin..."
         - run skin_url_task def:<[url]> save:newQueue
         - while <entry[newQueue].created_queue.state> == running:
