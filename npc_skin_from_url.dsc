@@ -1,5 +1,29 @@
-# Allows a player to set an npc's skin with a url using /npc skin [-u/--url] <url> (slim)
-# Just drop this file into the Denizen/scripts folder and you're done!
+# +----------------------
+# |
+# | NPC Skin From URL
+# |
+# | Citizens extension to set NPC skins from a direct image URL.
+# |
+# +----------------------
+#
+# @original-author Mergu
+# @updated-by mcmonkey
+# @date 2019/11/19
+# @denizen-build REL-1690
+# @script-version 1.5
+#
+# Installation:
+# Just put the script in your scripts folder and reload.
+#
+# Usage:
+# Type command: /npc skin --url (url here)
+# For slim ("Alex") model NPCs, use /npc skin --url (url here) slim
+#
+# Examples:
+# /npc skin --url https://i.imgur.com/Pgu9R1s.png
+# /npc skin --url https://i.imgur.com/6l1i0uB.png slim
+#
+# ---------------------------- END HEADER ----------------------------
 
 skin_url_handler:
     type: world
