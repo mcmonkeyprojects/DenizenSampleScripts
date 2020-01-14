@@ -8,7 +8,7 @@
 #
 # @author mcmonkey
 # @date 2019/08/18
-# @denizen-build REL-1681
+# @denizen-build REL-1700
 # @script-version 1.1
 #
 # Installation:
@@ -114,7 +114,7 @@ cuboid_tool_world:
         on player left clicks block with cuboid_tool_item:
         - if <context.location.material.name||air> == air:
             - stop
-        - flag player ctool_selection:cu@<context.location>|<context.location>
+        - flag player ctool_selection:<cuboid[<context.location>|<context.location>]>
         - inject cuboid_tool_status_task
         - determine cancelled
         on player right clicks block with cuboid_tool_item:
@@ -123,7 +123,7 @@ cuboid_tool_world:
         - if <player.has_flag[ctool_selection]>:
             - flag player ctool_selection:<player.flag[ctool_selection].as_cuboid.include[<context.location>]>
         - else:
-            - flag player ctool_selection:cu@<context.location>|<context.location>
+            - flag player ctool_selection:<cuboid[<context.location>|<context.location>]>
         - inject cuboid_tool_status_task
         - determine cancelled
         # Prevent misuse

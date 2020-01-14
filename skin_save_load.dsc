@@ -8,7 +8,7 @@
 #
 # @author mcmonkey
 # @date 2019/08/26
-# @denizen-build REL-1682
+# @denizen-build REL-1700
 # @script-version 1.0
 #
 # Installation:
@@ -55,9 +55,6 @@ npc_saveskin_command_validate:
     type: task
     debug: false
     script:
-    - if !<player.has_permission[denizen.saveskin]||<<player.is_op||context.server>>>:
-      - narrate "<red>Nope! You don't have permission to do that."
-      - stop
     - if <context.args.size> == 0:
       - narrate "<red>Must specify a skin name."
       - stop

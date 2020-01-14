@@ -6,7 +6,7 @@
 #
 # @author mcmonkey
 # @date 2019/03/01
-# @denizen-build REL-1679
+# @denizen-build REL-1700
 # @script-version 1.0
 #
 # Installation:
@@ -45,11 +45,11 @@ magic_sidebar_world:
     events:
         on delta time secondly:
         - define per_second <script[magic_sidebar_config].yaml_key[per_second]>
-        - define wait_time <el@1.div[<[per_second]>]>s
+        - define wait_time <element[1].div[<[per_second]>]>s
         - define players <server.list_online_players.filter[has_flag[sidebar_disabled].not]>
         - define title <script[magic_sidebar_config].yaml_key[title]>
         - repeat <[per_second]>:
-            - sidebar title:<parse:<[title]>> values:<proc[magic_sidebar_lines_proc]> players:<[players]> per_player
+            - sidebar title:<[title].parsed> values:<proc[magic_sidebar_lines_proc]> players:<[players]> per_player
             - wait <[wait_time]>
 
 magic_sidebar_lines_proc:
@@ -59,7 +59,7 @@ magic_sidebar_lines_proc:
     - define list <script[magic_sidebar_config].yaml_key[lines]>
     - foreach <[list]> as:line:
         - define list_index <[loop_index]>
-        - define line <parse:<[line]>>
+        - define line <[line].parsed>
         - if <[line].starts_with[<&lb>scroll<&co>]>:
             - define width <[line].after[<&co>].before[/]>
             - define rate <[line].after[/].before[<&rb>]>
@@ -86,7 +86,7 @@ magic_sidebar_lines_proc:
                         - define end <[end].add[2]>
                     - if <[end]> < <[charpos]>:
                         - repeat stop
-                - define line "<[start_color]><[line].substring[<[index]>,<[end]>]>"
+                - define line <[start_color]><[line].substring[<[index]>,<[end]>]>
         - define list <[list].set[<[line]>].at[<[list_index]>]>
     - determine <[list]>
 

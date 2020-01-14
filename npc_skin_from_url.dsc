@@ -9,7 +9,7 @@
 # @original-author Mergu
 # @updated-by mcmonkey
 # @date 2019/11/19
-# @denizen-build REL-1690
+# @denizen-build REL-1700
 # @script-version 1.5
 #
 # Installation:
@@ -33,7 +33,7 @@ skin_url_handler:
     debug: false
     events:
         on npc command:
-        - if <context.args.get[1]||null> != skin || <context.args.get[2]||null> != "--url":
+        - if <context.args.get[1]||null> != skin || <context.args.get[2]||null> != --url:
             - stop
         - determine passively fulfilled
         - if <context.server>:
@@ -77,5 +77,5 @@ skin_url_task:
     debug: false
     definitions: url
     script:
-    - ~webget "https://api.mineskin.org/generate/url" post:url=<[url]> timeout:5s save:webResult
+    - ~webget https://api.mineskin.org/generate/url post:url=<[url]> timeout:5s save:webResult
     - determine <entry[webResult].result||null>

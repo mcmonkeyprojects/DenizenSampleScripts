@@ -8,7 +8,7 @@
 #
 # @author mcmonkey
 # @date 2019/08/16
-# @denizen-build REL-1681
+# @denizen-build REL-1700
 # @script-version 1.2
 #
 # Installation:
@@ -41,11 +41,11 @@ npc_command_assignment:
         on click:
         - foreach "<npc.flag[commands].random.split[ - ].escape_contents>" as:command:
             - if <[command].unescaped.starts_with[player:]>:
-                - execute as_player <parse:<[command].unescaped.after[player:]>>
+                - execute as_player <[command].unescaped.after[player:].parsed>
             - else if <[command].unescaped.starts_with[op:]>:
-                - execute as_op <parse:<[command].unescaped.after[op:]>>
+                - execute as_op <[command].unescaped.after[op:].parsed>
             - else:
-                - execute as_server <parse:<[command].unescaped>>
+                - execute as_server <[command].unescaped.parsed>
 
 npc_command_command:
     type: command
@@ -61,22 +61,22 @@ npc_command_command:
         - narrate "<&c>/npccommand add [command] - Add a single command (to choose randomly from many)"
         - narrate "<&c>Use 'player<&co>' to run as player, otherwise runs as server. Separate multiple commands to execute at once with ' - '."
         - narrate "<&c>For example: /npccommand set player:summon lightning_bolt - say 'shocking!' - player:summon bat"
-        - queue clear
+        - stop
     - if <player.selected_npc||null> == null:
         - narrate "<&c>Please select an NPC!"
-        - queue clear
-    - if <context.args.get[1]> == "off":
+        - stop
+    - if <context.args.get[1]> == off:
         - if <npc.script.name||null> != npc_command_assignment:
             - narrate "<&c>That NPC is not a command runner."
-            - queue clear
+            - stop
         - assignment remove
         - flag <npc> commands:!
         - narrate "<&a>Successfully removed command running."
-        - queue clear
+        - stop
     - assignment set script:npc_command_assignment npc:<player.selected_npc>
-    - if <context.args.get[1]> == "set":
+    - if <context.args.get[1]> == set:
         - flag <player.selected_npc> commands:<context.raw_args.after[set].trim>
         - narrate "<&a>Command set."
-    - else if <context.args.get[1]> == "add":
+    - else if <context.args.get[1]> == add:
         - flag <player.selected_npc> commands:->:<context.raw_args.after[add].trim>
         - narrate "<&a>Command added."
