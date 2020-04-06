@@ -4,7 +4,7 @@
 # |
 # | A drop-in helper for saving/loading skins for reuse.
 # |
-# +----------------------
+# +-------------------
 #
 # @author mcmonkey
 # @date 2019/08/26

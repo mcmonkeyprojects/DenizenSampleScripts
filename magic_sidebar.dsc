@@ -1,8 +1,10 @@
-# +-------------------------
+# +--------------------------
 # |
 # | M a g i c   S i d e b a r
 # |
 # | Provides a working live-updating per-player sidebar!
+# |
+# +--------------------------
 #
 # @author mcmonkey
 # @date 2019/03/01

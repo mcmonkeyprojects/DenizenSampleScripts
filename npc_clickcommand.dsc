@@ -4,7 +4,7 @@
 # |
 # | A drop-in helper for making NPCs that execute commands.
 # |
-# +----------------------
+# +--------------------
 #
 # @author mcmonkey
 # @date 2019/08/16
