@@ -2,14 +2,14 @@
 # |
 # | C u b o i d   T o o l
 # |
-# | Handy tool to make notable cuboids.
+# | Handy tool to make noted cuboids.
 # |
 # +----------------------
 #
 # @author mcmonkey
-# @date 2019/08/18
-# @denizen-build REL-1700
-# @script-version 1.1
+# @date 2020/06/01
+# @denizen-build REL-1709
+# @script-version 1.2
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -19,13 +19,13 @@
 # While holding the tool, left click to start a selection and right click to expand the selection.
 # Requires permission "cuboidtool.ctool"
 #
-# Use "/cnote [name]" to note your selected cuboid as the name. For example, "/cnote myshop" adds notable cuboid 'myshop'.
+# Use "/cnote [name]" to note your selected cuboid as the name. For example, "/cnote myshop" adds noted cuboid 'myshop'.
 # Requires permission "cuboidtool.cnote"
 #
 # Use "/cshow" to show your current cuboid selection.
 # Requirers permission "cuboidtool.cshow"
 #
-# In a script or "/ex" command, use "<player.has_flag[ctool_selection]>" to check if the player has a selection
+# In a script or "/ex" command, use "<player.has_flag[ctool_selection]>" to check if the player has a selection.
 # and "<player.flag[ctool_selection].as_cuboid>" to get the selected cuboid.
 #
 # ---------------------------- END HEADER ----------------------------
@@ -97,9 +97,9 @@ cuboid_tool_status_task:
     debug: false
     script:
     - define cuboid <player.flag[ctool_selection].as_cuboid>
-    - define min "<aqua><[cuboid].min.simple.replace[,].with[<gray>, <aqua>]><green>"
-    - define max "<aqua><[cuboid].max.simple.replace[,].with[<gray>, <aqua>]><green>"
-    - define size "<aqua><[cuboid].size.simple.replace[,].with[<gray>, <aqua>]><green>"
+    - define min "<aqua><[cuboid].min.xyz.replace[,].with[<gray>, <aqua>]><green>"
+    - define max "<aqua><[cuboid].max.xyz.replace[,].with[<gray>, <aqua>]><green>"
+    - define size "<aqua><[cuboid].size.xyz.replace[,].with[<gray>, <aqua>]><green>"
     - define volume <aqua><[cuboid].volume><green>
     - define message "<green>Cuboid selection: from <[min]> to <[max]> (size <[size]>, volume <[volume]>)"
     - actionbar <[message]>
@@ -129,7 +129,7 @@ cuboid_tool_world:
         # Prevent misuse
         on player drops cuboid_tool_item:
         - remove <context.entity>
-        on player clicks in inventory with cuboid_tool_item:
+        on player clicks in inventory with:cuboid_tool_item:
         - inject locally abuse_prevention_click
         on player drags cuboid_tool_item in inventory:
         - inject locally abuse_prevention_click
