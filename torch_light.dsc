@@ -8,7 +8,7 @@
 #
 # @author mcmonkey
 # @date 2019/08/17
-# @denizen-build REL-1700
+# @denizen-build REL-1714
 # @script-version 2.9
 #
 # Installation:
@@ -23,7 +23,7 @@
 # ---------------------------- END HEADER ----------------------------
 
 torch_light_config:
-    type: yaml data
+    type: data
     items:
     # =============== Add more material names here ===============
     - torch
@@ -53,11 +53,11 @@ torch_light_world:
         - wait 1t
         - define loc <player.location.add[0,1,0]>
         - inject locally subpaths.reset
-        - if <script[torch_light_config].yaml_key[items].contains[<player.item_in_hand.material.name||null>]>:
-          - light <[loc]> <script[torch_light_config].yaml_key[levels.<player.item_in_hand.material.name>]||14>
+        - if <script[torch_light_config].data_key[items].contains[<player.item_in_hand.material.name||null>]>:
+          - light <[loc]> <script[torch_light_config].data_key[levels.<player.item_in_hand.material.name>]||14>
           - flag player torch_light_loc:<[loc]>
-        - else if <script[torch_light_config].yaml_key[items].contains[<player.item_in_offhand.material.name||null>]>:
-          - light <[loc]> <script[torch_light_config].yaml_key[levels.<player.item_in_offhand.material.name>]||14>
+        - else if <script[torch_light_config].data_key[items].contains[<player.item_in_offhand.material.name||null>]>:
+          - light <[loc]> <script[torch_light_config].data_key[levels.<player.item_in_offhand.material.name>]||14>
           - flag player torch_light_loc:<[loc]>
     events:
         on player holds item:

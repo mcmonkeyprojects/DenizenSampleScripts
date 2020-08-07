@@ -8,7 +8,7 @@
 #
 # @author mcmonkey
 # @date 2020/06/18
-# @denizen-build DEV-4890
+# @denizen-build REL-1714
 # @script-version 1.0
 #
 # Installation:
@@ -121,13 +121,13 @@ ellipsoid_tool_world:
     debug: false
     events:
         # Basic usage logic
-        on player left clicks block with ellipsoid_tool_item:
+        on player left clicks block with:ellipsoid_tool_item:
         - if <context.location.material.name||air> == air:
             - stop
         - flag player elliptool_selection:<ellipsoid[<context.location.xyz>,<context.location.world>,1,1,1]>
         - inject ellipsoid_tool_status_task
         - determine cancelled
-        on player right clicks block with ellipsoid_tool_item:
+        on player right clicks block with:ellipsoid_tool_item:
         - if <context.location.material.name||air> == air:
             - stop
         - if <player.has_flag[elliptool_selection]>:

@@ -8,7 +8,7 @@
 #
 # @author mcmonkey
 # @date 2019/03/01
-# @denizen-build REL-1700
+# @denizen-build REL-1714
 # @script-version 1.0
 #
 # Installation:
@@ -23,7 +23,7 @@
 
 # ------------------------- Begin configuration -------------------------
 magic_sidebar_config:
-    type: yaml data
+    type: data
     # How many updates per second (acceptable values: 1, 2, 4, 5, 10)
     per_second: 5
     # Set this to your sidebar title.
@@ -38,7 +38,7 @@ magic_sidebar_config:
     - "<&8>-----------------------"
     - "Ping: <&b><player.ping>"
     - "Location: <&b><player.location.simple.before_last[,].replace[,].with[<&f>,<&b>]>"
-    - "Online Players: <&b><server.list_online_players.size><&f>/<&b><server.max_players>"
+    - "Online Players: <&b><server.online_players.size><&f>/<&b><server.max_players>"
 # ------------------------- End of configuration -------------------------
 
 magic_sidebar_world:
@@ -46,10 +46,10 @@ magic_sidebar_world:
     debug: false
     events:
         on delta time secondly:
-        - define per_second <script[magic_sidebar_config].yaml_key[per_second]>
+        - define per_second <script[magic_sidebar_config].data_key[per_second]>
         - define wait_time <element[1].div[<[per_second]>]>s
-        - define players <server.list_online_players.filter[has_flag[sidebar_disabled].not]>
-        - define title <script[magic_sidebar_config].yaml_key[title]>
+        - define players <server.online_players.filter[has_flag[sidebar_disabled].not]>
+        - define title <script[magic_sidebar_config].data_key[title]>
         - repeat <[per_second]>:
             - sidebar title:<[title].parsed> values:<proc[magic_sidebar_lines_proc]> players:<[players]> per_player
             - wait <[wait_time]>
@@ -58,7 +58,7 @@ magic_sidebar_lines_proc:
     type: procedure
     debug: false
     script:
-    - define list <script[magic_sidebar_config].yaml_key[lines]>
+    - define list <script[magic_sidebar_config].data_key[lines]>
     - foreach <[list]> as:line:
         - define list_index <[loop_index]>
         - define line <[line].parsed>

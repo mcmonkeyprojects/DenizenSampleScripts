@@ -8,7 +8,7 @@
 #
 # @author mcmonkey
 # @date 2020/06/01
-# @denizen-build REL-1709
+# @denizen-build REL-1714
 # @script-version 1.2
 #
 # Installation:
@@ -111,19 +111,19 @@ cuboid_tool_world:
     debug: false
     events:
         # Basic usage logic
-        on player left clicks block with cuboid_tool_item:
+        on player left clicks block with:cuboid_tool_item:
         - if <context.location.material.name||air> == air:
             - stop
-        - flag player ctool_selection:<cuboid[<context.location>|<context.location>]>
+        - flag player ctool_selection:<context.location.to_cuboid[<context.location>]>
         - inject cuboid_tool_status_task
         - determine cancelled
-        on player right clicks block with cuboid_tool_item:
+        on player right clicks block with:cuboid_tool_item:
         - if <context.location.material.name||air> == air:
             - stop
         - if <player.has_flag[ctool_selection]>:
             - flag player ctool_selection:<player.flag[ctool_selection].as_cuboid.include[<context.location>]>
         - else:
-            - flag player ctool_selection:<cuboid[<context.location>|<context.location>]>
+            - flag player ctool_selection:<context.location.to_cuboid[<context.location>]>
         - inject cuboid_tool_status_task
         - determine cancelled
         # Prevent misuse
