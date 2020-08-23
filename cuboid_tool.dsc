@@ -103,8 +103,12 @@ cuboid_tool_status_task:
     - define volume <aqua><[cuboid].volume><green>
     - define message "<green>Cuboid selection: from <[min]> to <[max]> (size <[size]>, volume <[volume]>)"
     - actionbar <[message]>
-    - playeffect effect:flame at:<[cuboid].shell> offset:0 targets:<player>
-    - playeffect effect:barrier at:<[cuboid].outline> offset:0 targets:<player>
+    # Loose approximation of the cuboid's scale to prevent trying to spawn a trillion particles
+    - define approx_scale <[cuboid].max.sub[<[cuboid].min>].vector_length>
+    - if <[approx_scale]> < 200:
+        - playeffect effect:flame at:<[cuboid].shell> offset:0 targets:<player> visibility:32
+    - if <[approx_scale]> < 1000:
+        - playeffect effect:barrier at:<[cuboid].outline> offset:0 targets:<player> visibility:32
 
 cuboid_tool_world:
     type: world
