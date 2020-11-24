@@ -7,9 +7,9 @@
 # +------------------
 #
 # @author mcmonkey
-# @date 2020/07/17
-# @denizen-build REL-1712
-# @script-version 1.0
+# @date 2020/11/24
+# @denizen-build REL-1721
+# @script-version 1.1
 #
 # Installation:
 # - Put the script in your scripts folder.
@@ -46,6 +46,8 @@ head_list_command:
                 - define heads:->:player_head[skull_skin=<[one_head_map].get[uuid]>|<[one_head_map].get[value]>;display_name=<[title]>]
                 - if <[heads].size> > 1000:
                     - foreach stop
+            - if <[loop_index].mod[1000]> == 999:
+                - wait 1t
         - yaml set id:head_cache <[search]>:!|:<[heads]>
     - if <[heads].is_empty>:
         - narrate "<&c>No matches for that search."
