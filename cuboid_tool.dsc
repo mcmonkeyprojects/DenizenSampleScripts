@@ -8,8 +8,8 @@
 #
 # @author mcmonkey
 # @date 2020/06/01
-# @denizen-build REL-1714
-# @script-version 1.2
+# @denizen-build REL-1723
+# @script-version 1.3
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -38,7 +38,7 @@ cuboid_tool_item:
     enchantments:
     - vanishing_curse:1
     mechanisms:
-        flags: HIDE_ENCHANTS
+        hides: ENCHANTS
     lore:
     - Left click to start a selection.
     - Right click to expand the selection.
