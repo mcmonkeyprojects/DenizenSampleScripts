@@ -21,7 +21,7 @@
 # Refer to the cuboid tool info for how to get and use a CTool.
 #
 # Use "/ccopy" to copy your selected area (relative to where you stand).
-# Use "/crotate [90/180/270]" or "/cflip [x/y]" to rotate/flip the copy.
+# Use "/crotate [90/180/270]" or "/cflip [x/z]" to rotate/flip the copy.
 # Use "/cpreview [time] [noair]" to show a temporary preview of how it will paste.
 # Use "/cpaste [noair]" to actually paste the copy in (relative to where you stand).
 # Use "/csave [name]" to save the copy to file and "/cload [name]" to load it back.
