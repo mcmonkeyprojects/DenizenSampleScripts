@@ -154,7 +154,7 @@ cflip_command:
             - ~schematic name:<player.uuid>_copy flip_z delayed
             - narrate "<&2>Flipped your copy around the Z axis."
         - default:
-            - narrate "<&c>/cflip [x/y]"
+            - narrate "<&c>/cflip [x/z]"
 
 crotate_command:
     type: command
