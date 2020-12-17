@@ -125,6 +125,9 @@ cuboid_tool_world:
         - if <context.location.material.name||air> == air:
             - stop
         - if <player.has_flag[ctool_selection]>:
+            - if <player.flag[ctool_selection].as_cuboid.min.world.name> != <context.location.world.name>:
+                - narrate "<&c>You must restart your selection by left clicking."
+                - stop
             - flag player ctool_selection:<player.flag[ctool_selection].as_cuboid.include[<context.location>]>
         - else:
             - flag player ctool_selection:<context.location.to_cuboid[<context.location>]>
