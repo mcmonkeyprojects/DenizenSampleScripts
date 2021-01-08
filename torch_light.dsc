@@ -8,8 +8,8 @@
 #
 # @author mcmonkey
 # @date 2019/08/17
-# @denizen-build REL-1714
-# @script-version 2.9
+# @denizen-build REL-1723
+# @script-version 3.0
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -31,10 +31,12 @@ torch_light_config:
     - redstone_torch
     - glowstone
     - glowstone_dust
+    - soul_lantern
     levels:
       # =============== Add alternate levels here ===============
       redstone_torch: 8
       glowstone_dust: 6
+      soul_lantern: 6
     # =============== end of editable section ===============
 
 torch_light_world:
@@ -60,9 +62,9 @@ torch_light_world:
           - light <[loc]> <script[torch_light_config].data_key[levels.<player.item_in_offhand.material.name>]||14>
           - flag player torch_light_loc:<[loc]>
     events:
-        on player holds item:
+        after player holds item:
         - inject locally subpaths.update
-        on player steps on block:
+        after player steps on block:
         - inject locally subpaths.update
         on player quits:
         - inject locally subpaths.reset
