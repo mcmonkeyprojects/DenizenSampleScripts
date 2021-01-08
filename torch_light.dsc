@@ -44,23 +44,27 @@ torch_light_world:
     debug: false
     subpaths:
         reset_delayed:
-          - light <[1]> reset
+        - light <[1]> reset
+        - announce reset
         reset:
         - if <player.has_flag[torch_light_loc]>:
-          - if <player.flag[torch_light_loc].as_location.simple> == <[loc].simple||null>:
-            - stop
-          - run locally subpaths.reset_delayed def:<player.flag[torch_light_loc]> delay:2t
-          - flag player torch_light_loc:!
+            - if <player.flag[torch_light_loc].as_location.simple> == <[loc].simple||null>:
+                - stop
+            - run locally subpaths.reset_delayed def:<player.flag[torch_light_loc]> delay:2t
+            - flag player torch_light_loc:!
         update:
-        - wait 1t
         - define loc <player.location.add[0,1,0]>
-        - inject locally subpaths.reset
         - if <script[torch_light_config].data_key[items].contains[<player.item_in_hand.material.name||null>]>:
-          - light <[loc]> <script[torch_light_config].data_key[levels.<player.item_in_hand.material.name>]||14>
-          - flag player torch_light_loc:<[loc]>
+            - inject locally subpaths.reset
+            - light <[loc]> <script[torch_light_config].data_key[levels.<player.item_in_hand.material.name>]||14>
+            - flag player torch_light_loc:<[loc]>
         - else if <script[torch_light_config].data_key[items].contains[<player.item_in_offhand.material.name||null>]>:
-          - light <[loc]> <script[torch_light_config].data_key[levels.<player.item_in_offhand.material.name>]||14>
-          - flag player torch_light_loc:<[loc]>
+            - inject locally subpaths.reset
+            - light <[loc]> <script[torch_light_config].data_key[levels.<player.item_in_offhand.material.name>]||14>
+            - flag player torch_light_loc:<[loc]>
+        - else:
+            - define loc:!
+            - inject locally subpaths.reset
     events:
         after player holds item:
         - inject locally subpaths.update
