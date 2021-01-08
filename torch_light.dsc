@@ -45,7 +45,6 @@ torch_light_world:
     subpaths:
         reset_delayed:
         - light <[1]> reset
-        - announce reset
         reset:
         - if <player.has_flag[torch_light_loc]>:
             - if <player.flag[torch_light_loc].as_location.simple> == <[loc].simple||null>:
