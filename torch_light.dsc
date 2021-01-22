@@ -65,6 +65,8 @@ torch_light_world:
             - define loc:!
             - inject locally subpaths.reset
     events:
+        after player drops item:
+        - inject locally subpaths.update
         after player holds item:
         - inject locally subpaths.update
         after player steps on block:
