@@ -43,8 +43,9 @@ polygon_tool_item:
     mechanisms:
         hides: ENCHANTS
     lore:
-    - Left click to start a polygon selection.
-    - Right click to add a corner to the polygon.
+    - <&7>Left click to start a polygon selection.
+    - <&7>Right click to add a corner to the polygon.
+    - <&7>Use <&b>/pheight <&7>to expand the vertical height.
 
 ptool_command:
     type: command
