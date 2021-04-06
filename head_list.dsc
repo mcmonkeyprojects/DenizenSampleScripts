@@ -8,7 +8,7 @@
 #
 # @author mcmonkey
 # @date 2020/11/24
-# @denizen-build REL-1721
+# @denizen-build REL-1733
 # @script-version 1.1
 #
 # Installation:
@@ -43,7 +43,9 @@ head_list_command:
         - foreach <[headmegalist]> as:one_head_map:
             - define title <[one_head_map].get[title]>
             - if <[title].contains[<[search]>]>:
-                - define heads:->:player_head[skull_skin=<[one_head_map].get[uuid]>|<[one_head_map].get[value]>;display_name=<[title]>]
+                - define item <item[player_head].with[skull_skin=<[one_head_map].get[uuid]>|<[one_head_map].get[value]>]>
+                - adjust def:item display_name:<[title]>
+                - define heads:->:<[item]>
                 - if <[heads].size> > 1000:
                     - foreach stop
             - if <[loop_index].mod[1000]> == 999:

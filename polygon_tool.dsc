@@ -124,7 +124,6 @@ polygon_tool_status_task:
     type: task
     debug: false
     script:
-    # TODO
     - define polygon <player.flag[ptool_selection]>
     - define message "<green>Polygon selection: in <[polygon].world.name> from Y <[polygon].min_y.round_to[2]> to <[polygon].max_y.round_to[2]> with <[polygon].corners.size> corners"
     - actionbar <[message]>
