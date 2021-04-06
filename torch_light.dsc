@@ -47,7 +47,7 @@ torch_light_world:
         - light <[1]> reset
         reset:
         - if <player.has_flag[torch_light_loc]>:
-            - if <player.flag[torch_light_loc].as_location.simple> == <[loc].simple||null>:
+            - if <player.flag[torch_light_loc].simple> == <[loc].simple||null>:
                 - stop
             - run locally subpaths.reset_delayed def:<player.flag[torch_light_loc]> delay:2t
             - flag player torch_light_loc:!

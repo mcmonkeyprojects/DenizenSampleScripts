@@ -8,8 +8,8 @@
 #
 # @author mcmonkey
 # @date 2020/06/01
-# @denizen-build REL-1723
-# @script-version 1.3
+# @denizen-build REL-1733
+# @script-version 1.4
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -26,7 +26,7 @@
 # Requirers permission "cuboidtool.cshow"
 #
 # In a script or "/ex" command, use "<player.has_flag[ctool_selection]>" to check if the player has a selection.
-# and "<player.flag[ctool_selection].as_cuboid>" to get the selected cuboid.
+# and "<player.flag[ctool_selection]>" to get the selected cuboid.
 #
 # ---------------------------- END HEADER ----------------------------
 
@@ -96,7 +96,7 @@ cuboid_tool_status_task:
     type: task
     debug: false
     script:
-    - define cuboid <player.flag[ctool_selection].as_cuboid>
+    - define cuboid <player.flag[ctool_selection]>
     - define min "<aqua><[cuboid].min.xyz.replace[,].with[<gray>, <aqua>]><green>"
     - define max "<aqua><[cuboid].max.xyz.replace[,].with[<gray>, <aqua>]><green>"
     - define size "<aqua><[cuboid].size.xyz.replace[,].with[<gray>, <aqua>]><green>"
@@ -125,10 +125,10 @@ cuboid_tool_world:
         - if <context.location.material.name||air> == air:
             - stop
         - if <player.has_flag[ctool_selection]>:
-            - if <player.flag[ctool_selection].as_cuboid.min.world.name> != <context.location.world.name>:
+            - if <player.flag[ctool_selection].min.world.name> != <context.location.world.name>:
                 - narrate "<&c>You must restart your selection by left clicking."
                 - stop
-            - flag player ctool_selection:<player.flag[ctool_selection].as_cuboid.include[<context.location>]>
+            - flag player ctool_selection:<player.flag[ctool_selection].include[<context.location>]>
         - else:
             - flag player ctool_selection:<context.location.to_cuboid[<context.location>]>
         - inject cuboid_tool_status_task
