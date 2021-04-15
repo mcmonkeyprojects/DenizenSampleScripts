@@ -49,27 +49,27 @@ torch_light_world:
         - if <player.has_flag[torch_light_loc]>:
             - if <player.flag[torch_light_loc].simple> == <[loc].simple||null>:
                 - stop
-            - run locally subpaths.reset_delayed def:<player.flag[torch_light_loc]> delay:2t
+            - run torch_light_world.subpaths.reset_delayed def:<player.flag[torch_light_loc]> delay:2t
             - flag player torch_light_loc:!
         update:
         - define loc <player.location.add[0,1,0]>
         - if <script[torch_light_config].data_key[items].contains[<player.item_in_hand.material.name||null>]>:
-            - inject locally subpaths.reset
+            - inject torch_light_world.subpaths.reset
             - light <[loc]> <script[torch_light_config].data_key[levels.<player.item_in_hand.material.name>]||14>
             - flag player torch_light_loc:<[loc]>
         - else if <script[torch_light_config].data_key[items].contains[<player.item_in_offhand.material.name||null>]>:
-            - inject locally subpaths.reset
+            - inject torch_light_world.subpaths.reset
             - light <[loc]> <script[torch_light_config].data_key[levels.<player.item_in_offhand.material.name>]||14>
             - flag player torch_light_loc:<[loc]>
         - else:
             - define loc:!
-            - inject locally subpaths.reset
+            - inject torch_light_world.subpaths.reset
     events:
         after player drops item:
-        - inject locally subpaths.update
+        - inject torch_light_world.subpaths.update
         after player holds item:
-        - inject locally subpaths.update
+        - inject torch_light_world.subpaths.update
         after player steps on block:
-        - inject locally subpaths.update
+        - inject torch_light_world.subpaths.update
         on player quits:
-        - inject locally subpaths.reset
+        - inject torch_light_world.subpaths.reset

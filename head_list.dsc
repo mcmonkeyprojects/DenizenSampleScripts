@@ -137,7 +137,7 @@ heads_list_load:
     - foreach <[headmegalist]> as:one_head_map:
         - if <[loop_index].mod[1000]> == 1:
             - wait 1t
-        - foreach <[one_head_map].get[tags]> as:tag:
+        - foreach <[one_head_map].get[tags].if_null[<list>]> as:tag:
             - if <[tag].length> > 0:
                 - yaml set id:head_cache tags.<[tag].trim>:->:<[one_head_map].proc[head_get_item_proc]>
     - debug log "Heads list loaded, <[headmegalist].size> heads."

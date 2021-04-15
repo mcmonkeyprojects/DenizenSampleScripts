@@ -137,9 +137,9 @@ cuboid_tool_world:
         on player drops cuboid_tool_item:
         - remove <context.entity>
         on player clicks in inventory with:cuboid_tool_item:
-        - inject locally abuse_prevention_click
+        - inject cuboid_tool_world.abuse_prevention_click
         on player drags cuboid_tool_item in inventory:
-        - inject locally abuse_prevention_click
+        - inject cuboid_tool_world.abuse_prevention_click
     abuse_prevention_click:
         - if <context.inventory.inventory_type> == player:
             - stop

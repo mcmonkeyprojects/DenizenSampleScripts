@@ -162,9 +162,9 @@ polygon_tool_world:
         on player drops polygon_tool_item:
         - remove <context.entity>
         on player clicks in inventory with:polygon_tool_item:
-        - inject locally abuse_prevention_click
+        - inject polygon_tool_world.abuse_prevention_click
         on player drags polygon_tool_item in inventory:
-        - inject locally abuse_prevention_click
+        - inject polygon_tool_world.abuse_prevention_click
     abuse_prevention_click:
         - if <context.inventory.inventory_type> == player:
             - stop
