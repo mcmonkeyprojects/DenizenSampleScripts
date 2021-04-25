@@ -8,11 +8,11 @@
 #
 # @author mcmonkey
 # @date 2020/12/16
-# @denizen-build REL-1724
+# @denizen-build REL-1736
 # @script-version 1.0
 #
 # Dependencies:
-# Cuboid Tool script - https://forum.denizenscript.com/viewtopic.php?f=13&t=190
+# Cuboid Tool script - https://forum.denizenscript.com/threads/cuboid-selector-tool.190/
 #
 # Installation:
 # Just put this script and the cuboid tool script in your scripts folder and reload.
@@ -44,7 +44,7 @@ ccopy_command:
         - schematic unload name:<player.uuid>_copy
     - narrate <&2>Copying...
     - flag player copying duration:1d
-    - ~schematic create name:<player.uuid>_copy <player.location.block> <player.flag[ctool_selection]> delayed
+    - ~schematic create name:<player.uuid>_copy <player.location.block> <player.flag[ctool_selection]> delayed flags
     - flag player copying:!
     - narrate <&2>Copied.
 
