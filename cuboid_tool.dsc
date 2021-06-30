@@ -97,9 +97,9 @@ cuboid_tool_status_task:
     debug: false
     script:
     - define cuboid <player.flag[ctool_selection]>
-    - define min "<aqua><[cuboid].min.xyz.replace[,].with[<gray>, <aqua>]><green>"
-    - define max "<aqua><[cuboid].max.xyz.replace[,].with[<gray>, <aqua>]><green>"
-    - define size "<aqua><[cuboid].size.xyz.replace[,].with[<gray>, <aqua>]><green>"
+    - define min "<aqua><[cuboid].min.xyz.replace_text[,].with[<gray>, <aqua>]><green>"
+    - define max "<aqua><[cuboid].max.xyz.replace_text[,].with[<gray>, <aqua>]><green>"
+    - define size "<aqua><[cuboid].size.xyz.replace_text[,].with[<gray>, <aqua>]><green>"
     - define volume <aqua><[cuboid].volume><green>
     - define message "<green>Cuboid selection: from <[min]> to <[max]> (size <[size]>, volume <[volume]>)"
     - actionbar <[message]>

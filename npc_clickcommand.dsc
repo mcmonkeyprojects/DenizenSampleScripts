@@ -39,13 +39,13 @@ npc_command_assignment:
         on assignment:
         - trigger name:click state:true
         on click:
-        - foreach "<npc.flag[commands].random.split[ - ].escape_contents>" as:command:
-            - if <[command].unescaped.starts_with[player:]>:
-                - execute as_player <[command].unescaped.after[player:].parsed>
-            - else if <[command].unescaped.starts_with[op:]>:
-                - execute as_op <[command].unescaped.after[op:].parsed>
+        - foreach "<npc.flag[commands].random.split[ - ]>" as:command:
+            - if <[command].starts_with[player:]>:
+                - execute as_player <[command].after[player:].parsed>
+            - else if <[command].starts_with[op:]>:
+                - execute as_op <[command].after[op:].parsed>
             - else:
-                - execute as_server <[command].unescaped.parsed>
+                - execute as_server <[command].parsed>
 
 npc_command_command:
     type: command

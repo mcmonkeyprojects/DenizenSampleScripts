@@ -100,8 +100,8 @@ ellipsoid_tool_status_task:
     debug: false
     script:
     - define ellipsoid <ellipsoid[<player.flag[elliptool_selection]>]>
-    - define loc "<aqua><[ellipsoid].location.block.xyz.replace[.0].replace[,].with[<gray>, <aqua>]><green>"
-    - define size_text "<aqua><[ellipsoid].size.block.xyz.replace[.0].replace[,].with[<gray>, <aqua>]><green>"
+    - define loc "<aqua><[ellipsoid].location.block.xyz.replace_text[.0].replace_text[,].with[<gray>, <aqua>]><green>"
+    - define size_text "<aqua><[ellipsoid].size.block.xyz.replace_text[.0].replace_text[,].with[<gray>, <aqua>]><green>"
     - define message "<green>Ellipsoid selection: at <[loc]>, size <[size_text]>"
     - actionbar <[message]>
     - playeffect effect:flame at:<[ellipsoid].shell> offset:0 targets:<player>
