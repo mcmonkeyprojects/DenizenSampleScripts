@@ -37,7 +37,7 @@ magic_sidebar_config:
     - "[scroll:20/5]<&a>Welcome to <&6>my server<&a>, <&b><player.name><&a>!"
     - "<&8>-----------------------"
     - "Ping: <&b><player.ping>"
-    - "Location: <&b><player.location.simple.before_last[,].replace_text[,].with[<&f>,<&b>]>"
+    - "Location: <&b><player.location.xyz.replace_text[,].with[<&f>,<&b>]>"
     - "Online Players: <&b><server.online_players.size><&f>/<&b><server.max_players>"
 # ------------------------- End of configuration -------------------------
 

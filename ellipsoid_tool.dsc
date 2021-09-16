@@ -8,8 +8,9 @@
 #
 # @author mcmonkey
 # @date 2020/06/18
-# @denizen-build REL-1733
-# @script-version 1.0
+# @updated 2021/09/16
+# @denizen-build REL-1747
+# @script-version 1.1
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -26,7 +27,7 @@
 # Requirers permission "ellipsoidtool.ellipshow"
 #
 # In a script or "/ex" command, use "<player.has_flag[elliptool_selection]>" to check if the player has a selection.
-# and "<ellipsoid[<player.flag[elliptool_selection]>]>" to get the selected ellipsoid.
+# and "<player.flag[elliptool_selection]>" to get the selected ellipsoid.
 #
 # ---------------------------- END HEADER ----------------------------
 
@@ -99,7 +100,7 @@ ellipsoid_tool_status_task:
     type: task
     debug: false
     script:
-    - define ellipsoid <ellipsoid[<player.flag[elliptool_selection]>]>
+    - define ellipsoid <player.flag[elliptool_selection]>
     - define loc "<aqua><[ellipsoid].location.block.xyz.replace_text[.0].replace_text[,].with[<gray>, <aqua>]><green>"
     - define size_text "<aqua><[ellipsoid].size.block.xyz.replace_text[.0].replace_text[,].with[<gray>, <aqua>]><green>"
     - define message "<green>Ellipsoid selection: at <[loc]>, size <[size_text]>"
@@ -124,16 +125,16 @@ ellipsoid_tool_world:
         on player left clicks block with:ellipsoid_tool_item:
         - if <context.location.material.name||air> == air:
             - stop
-        - flag player elliptool_selection:<ellipsoid[<context.location.xyz>,<context.location.world>,1,1,1]>
+        - flag player elliptool_selection:<context.location.to_ellipsoid[1,1,1]>
         - inject ellipsoid_tool_status_task
         - determine cancelled
         on player right clicks block with:ellipsoid_tool_item:
         - if <context.location.material.name||air> == air:
             - stop
         - if <player.has_flag[elliptool_selection]>:
-            - flag player elliptool_selection:<ellipsoid[<player.flag[elliptool_selection]>].include[<context.location>]>
+            - flag player elliptool_selection:<player.flag[elliptool_selection].include[<context.location>]>
         - else:
-            - flag player elliptool_selection:<ellipsoid[<context.location.xyz>,<context.location.world>,1,1,1]>
+            - flag player elliptool_selection:<context.location.to_ellipsoid[1,1,1]>
         - inject ellipsoid_tool_status_task
         - determine cancelled
         # Prevent misuse
