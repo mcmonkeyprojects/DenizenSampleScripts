@@ -12,7 +12,7 @@
 # @script-version 1.0
 #
 # Dependencies:
-# Cuboid Tool script - https://forum.denizenscript.com/threads/cuboid-selector-tool.190/
+# Cuboid Tool script - https://forum.denizenscript.com/resources/cuboid-selector-tool.1/
 #
 # Installation:
 # Just put this script and the cuboid tool script in your scripts folder and reload.

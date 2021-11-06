@@ -18,6 +18,7 @@
 # /sendplayer [player] [server]
 # When typed in-game, is used like: /sendplayer mcmonkey4eva myservernamehere
 # Very useful for something like an NPC right-click command, like: /npc command add sendplayer <p> myserver
+# NOTE: in modern Citizens, there is built-in support for /npc command add -p server myserver
 #
 # Has the permission "denizen.sendplayer", but is generally meant to be executed as the server.
 #

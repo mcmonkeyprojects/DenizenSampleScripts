@@ -20,6 +20,8 @@
 # Usage:
 # Hold a torch and run around! Also works in your offhand!
 #
+# WARNING: Incompatible with Paper 1.17+
+#
 # ---------------------------- END HEADER ----------------------------
 
 torch_light_config:

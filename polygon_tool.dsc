@@ -159,7 +159,7 @@ polygon_tool_world:
         - inject polygon_tool_status_task
         - determine cancelled
         # Prevent misuse
-        on player drops polygon_tool_item:
+        after player drops polygon_tool_item:
         - remove <context.entity>
         on player clicks in inventory with:polygon_tool_item:
         - inject polygon_tool_world.abuse_prevention_click

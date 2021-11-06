@@ -39,7 +39,7 @@ ellipsoid_tool_item:
     enchantments:
     - vanishing_curse:1
     mechanisms:
-        flags: HIDE_ENCHANTS
+        hides: ENCHANTS
     lore:
     - Left click to start a selection.
     - Right click to expand the selection.
@@ -138,7 +138,7 @@ ellipsoid_tool_world:
         - inject ellipsoid_tool_status_task
         - determine cancelled
         # Prevent misuse
-        on player drops ellipsoid_tool_item:
+        after player drops ellipsoid_tool_item:
         - remove <context.entity>
         on player clicks in inventory with:ellipsoid_tool_item:
         - inject ellipsoid_tool_world.abuse_prevention_click

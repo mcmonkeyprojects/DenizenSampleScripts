@@ -134,7 +134,7 @@ cuboid_tool_world:
         - inject cuboid_tool_status_task
         - determine cancelled
         # Prevent misuse
-        on player drops cuboid_tool_item:
+        after player drops cuboid_tool_item:
         - remove <context.entity>
         on player clicks in inventory with:cuboid_tool_item:
         - inject cuboid_tool_world.abuse_prevention_click
