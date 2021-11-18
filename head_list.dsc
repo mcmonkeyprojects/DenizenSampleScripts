@@ -8,7 +8,8 @@
 #
 # @author mcmonkey
 # @date 2020/11/24
-# @denizen-build REL-1735
+# @updated 2021/11/17
+# @denizen-build REL-1751
 # @script-version 1.1
 #
 # Installation:
@@ -29,8 +30,8 @@
 
 head_list_command:
     type: command
-    name: heads
     debug: false
+    name: heads
     usage: /heads (search)
     description: Searches a list of heads.
     permission: denizen.heads
@@ -49,60 +50,52 @@ head_list_command:
             - define heads <yaml[head_cache].read[<[search].escaped>]>
         - else:
             - define heads <list>
-            - define headmegalist <yaml[head_list].read[heads]>
-            - foreach <[headmegalist]> as:one_head_map:
-                - define title <[one_head_map].get[title]>
-                - define tags <[one_head_map].get[tags]>
-                - if <[title].contains[<[search]>]> || <[tags].contains[<[search]>]>:
+            - foreach <yaml[head_list].read[heads]> as:one_head_map:
+                - if <[one_head_map.title].contains[<[search]>]> || <[one_head_map.tags].contains[<[search]>]>:
                     - define heads:->:<[one_head_map].proc[head_get_item_proc]>
-                    - if <[heads].size> > 1000:
+                    - if <[heads].size> >= 1000:
                         - foreach stop
-                - if <[loop_index].mod[1000]> == 999:
-                    - wait 1t
-            - yaml set id:head_cache <[search]>:!|:<[heads]>
+                # Performance: wait 1t every thousand heads checked to avoid server freeze from large search
+                - wait 1t if:<[loop_index].mod[1000].equals[999]>
+            - yaml set id:head_cache <[search].escaped>:<[heads]>
         - if <[heads].is_empty>:
             - narrate "<&[error]>No matches for that search."
             - stop
-        - if <[heads].size> == 1001:
-            - narrate "<&[base]>Showing first 1000 matching heads..."
+        - if <[heads].size> == 1000:
+            - narrate "<&[base]>Showing first <&[emphasis]>1000<&[base]> matching heads..."
         - else:
             - narrate "<&[base]>Showing <&[emphasis]><[heads].size><&[base]> matching heads..."
-    - run head_list_inventory_open_task def:<list_single[<[heads]>].include[1]>
+    - run head_list_inventory_open_task def.heads:<[heads]> def.page:1
 
 head_list_arrow_left_item:
     type: item
+    debug: false
     material: player_head
-    display name: Previous Page
+    display name: <&f>Previous Page
     mechanisms:
         skull_skin: 6d9cb85a-2b76-4e1f-bccc-941978fd4de0|eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTE4NWM5N2RiYjgzNTNkZTY1MjY5OGQyNGI2NDMyN2I3OTNhM2YzMmE5OGJlNjdiNzE5ZmJlZGFiMzVlIn19fQ==
 
 head_list_arrow_right_item:
     type: item
+    debug: false
     material: player_head
-    display name: Next Page
+    display name: <&f>Next Page
     mechanisms:
         skull_skin: 3cd9b7a3-c8bc-4a05-8cb9-0b6d4673bca9|eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzFjMGVkZWRkNzExNWZjMWIyM2Q1MWNlOTY2MzU4YjI3MTk1ZGFmMjZlYmI2ZTQ1YTY2YzM0YzY5YzM0MDkxIn19fQ
 
 head_list_inventory:
     type: inventory
-    inventory: chest
     debug: false
+    inventory: chest
     title: Heads
     size: 54
-    slots:
-    - [] [] [] [] [] [] [] [] []
-    - [] [] [] [] [] [] [] [] []
-    - [] [] [] [] [] [] [] [] []
-    - [] [] [] [] [] [] [] [] []
-    - [] [] [] [] [] [] [] [] []
-    - [] [] [] [] [] [] [] [] []
 
 head_list_inventory_open_task:
     type: task
-    definitions: heads|page
     debug: false
+    definitions: heads|page
     script:
-    - flag player current_head_list:!|:<[heads]>
+    - flag player current_head_list:<[heads]>
     - flag player current_head_page:<[page]>
     - define inv <inventory[head_list_inventory]>
     - inventory set d:<[inv]> o:<[heads].get[<[page].sub[1].mul[45].max[1]>].to[<[page].mul[45]>]>
@@ -117,9 +110,11 @@ head_get_item_proc:
     debug: false
     definitions: one_head_map
     script:
-    - define item <item[player_head].with[skull_skin=<[one_head_map].get[uuid]>|<[one_head_map].get[value]>]>
-    - adjust def:item display_name:<[one_head_map].get[title]>
-    - determine <[item]>
+    # Use a map to avoid glitches like the title having a format code in it
+    - definemap mechs:
+        skull_skin: <[one_head_map].get[uuid]>|<[one_head_map].get[value]>
+        display: <[one_head_map].get[title]>
+    - determine <item[player_head].with_map[<[mechs]>]>
 
 heads_list_load:
     type: task
@@ -129,14 +124,17 @@ heads_list_load:
         - yaml unload id:head_list
         - yaml unload id:head_cache
     - ~yaml load:data/head_list.yml id:head_list
+    - if !<yaml.list.contains[head_list]>:
+        - debug error "Head list cannot load: you are missing your head list file! Check the install instructions and get a reference heads list file at https://forum.denizenscript.com/resources/in-game-custom-head-item-list.9/"
+        - stop
     - yaml create id:head_cache
     - wait 1t
     - define headmegalist <yaml[head_list].read[heads]>
+    - wait 1t
     - yaml set id:head_cache _!_default:<[headmegalist].get[1].to[5000].parse[proc[head_get_item_proc]]>
     - wait 1t
     - foreach <[headmegalist]> as:one_head_map:
-        - if <[loop_index].mod[1000]> == 1:
-            - wait 1t
+        - wait 1t if:<[loop_index].mod[500].equals[499]>
         - foreach <[one_head_map].get[tags].if_null[<list>]> as:tag:
             - if <[tag].length> > 0:
                 - yaml set id:head_cache tags.<[tag].trim>:->:<[one_head_map].proc[head_get_item_proc]>
@@ -146,18 +144,25 @@ head_list_world:
     type: world
     debug: false
     events:
-        on server start:
+        after server start:
         - run heads_list_load
-        on player clicks in head_list_inventory priority:1:
-        - if <context.raw_slot||100> < 55 && <context.cursor_item.material.name||air> != air:
+        # Block players adding items into the head list inv
+        on player clicks item in head_list_inventory with:!air priority:1:
+        # Only cancel if they clicked the scripted inventory (as opposed to their own playe rinventory)
+        - if <context.clicked_inventory.script.exists>:
             - determine cancelled
+        # Handle page arrows
         on player clicks head_list_arrow_left_item in head_list_inventory:
         - determine passively cancelled
         - if !<player.has_flag[current_head_list]>:
             - stop
-        - run head_list_inventory_open_task def:<list_single[<player.flag[current_head_list]>].include[<player.flag[current_head_page].sub[1]>]>
+        - run head_list_inventory_open_task def.heads:<player.flag[current_head_list]> def.page:<player.flag[current_head_page].sub[1]>
         on player clicks head_list_arrow_right_item in head_list_inventory:
         - determine passively cancelled
         - if !<player.has_flag[current_head_list]>:
             - stop
-        - run head_list_inventory_open_task def:<list_single[<player.flag[current_head_list]>].include[<player.flag[current_head_page].add[1]>]>
+        - run head_list_inventory_open_task def.heads:<player.flag[current_head_list]> def.page:<player.flag[current_head_page].add[1]>
+        # Cleanup the flag when needed
+        on player joins flagged:current_head_page:
+        - flag player current_head_page:!
+        - flag player current_head_page:!
