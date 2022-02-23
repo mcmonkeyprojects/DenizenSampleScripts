@@ -20,7 +20,10 @@
 # Usage:
 # Hold a torch and run around! Also works in your offhand!
 #
-# WARNING: Incompatible with Paper 1.17+
+#####################
+# +WARNING: Incompatible with Paper 1.17+
+# Would need to be replaced with vanilla light blocks to work.
+#####################
 #
 # ---------------------------- END HEADER ----------------------------
 
