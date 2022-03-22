@@ -8,8 +8,9 @@
 #
 # @author mcmonkey
 # @date 2021/11/06
-# @denizen-build REL-1751 or DEV-5882
-# @script-version 1.0
+# @updated 2022/03/21
+# @denizen-build REL-1762
+# @script-version 1.1
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -27,7 +28,7 @@
 #
 # You can then execute any common "/npc" commands by simplying using them through "/multinpc"
 # For example, to use "npc sneak" on all your selected NPCs, use "/multinpc sneak"
-# You can use the Trait command, for example "/trait sentinel" is ran like "/multinpc trait sentinel"
+# You can also use the /Trait and /Waypoints command, for example "/trait sentinel" is ran like "/multinpc trait sentinel"
 # If you have Sentinel, you can use Sentinel commands, for example "/multinpc sentinel damage 5"
 #
 # By default, runs in 'quiet' mode - meaning, it will try to shorten and conglomerate message output.
@@ -97,7 +98,7 @@ multinpc_command:
                 - narrate "<&[base]>Selected all <&[emphasis]><server.npcs.size><&[base]> NPC(s)."
                 - stop
             - else:
-                - define target <player.location.find.npcs.within[50].first.if_null[null]>
+                - define target <player.location.find_npcs_within[50].first.if_null[null]>
                 - if <[target]> == null:
                     - narrate "<&[error]>No nearby NPCs."
                     - stop
@@ -117,7 +118,7 @@ multinpc_command:
                 - flag player multinpc_selection:!
                 - stop
             - else:
-                - define target <player.location.find.npcs.within[50].first.if_null[null]>
+                - define target <player.location.find_npcs_within[50].first.if_null[null]>
                 - if <[target]> == null:
                     - narrate "<&[error]>No nearby NPCs."
                     - stop
@@ -167,7 +168,7 @@ multinpc_command:
                 - stop
             - define all_outputs <list>
             - define cmd "npc <context.raw_args>"
-            - if <context.args.first> == trait || ( <context.args.first> == sentinel && <plugin[Sentinel].exists> ):
+            - if <context.args.first> == trait || <context.args.first> == waypoints || ( <context.args.first> == sentinel && <plugin[Sentinel].exists> ):
                 - define cmd <context.raw_args>
             - if <player.has_flag[multinpc_loud]>:
                 - foreach <player.flag[multinpc_selection]> as:npc:
