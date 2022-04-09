@@ -56,6 +56,8 @@ cpaste_command:
     usage: /cpaste [noair]
     description: Pastes what you copy.
     permission: dscript.cpaste
+    tab completions:
+        1: noair
     script:
     - if !<schematic[<player.uuid>_copy].exists>:
         - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
@@ -77,6 +79,9 @@ cpreview_command:
     usage: /cpreview [time] [noair]
     description: Previews an available paste.
     permission: dscript.cpreview
+    tab completions:
+        1: 10s|30s|1m|5m|10m
+        2: noair
     script:
     - if !<schematic[<player.uuid>_copy].exists>:
         - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
@@ -102,6 +107,8 @@ cload_command:
     usage: /cload [name]
     description: Loads a saved area copy.
     permission: dscript.cload
+    tab completions:
+        1: <list>
     script:
     - if <context.args.is_empty>:
         - narrate "<&[error]>/cload [name]"
@@ -123,6 +130,8 @@ csave_command:
     usage: /csave [name]
     description: Saves your copied area to file.
     permission: dscript.csave
+    tab completions:
+        1: <list>
     script:
     - if <context.args.is_empty>:
         - narrate "<&[error]>/csave [name]"
@@ -143,6 +152,8 @@ cflip_command:
     usage: /cflip [x/z]
     description: Flips your copied area.
     permission: dscript.cflip
+    tab completions:
+        1: x|z
     script:
     - if !<schematic[<player.uuid>_copy].exists>:
         - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
@@ -164,6 +175,8 @@ crotate_command:
     usage: /crotate [90/180/270]
     description: Rotates your copied area.
     permission: dscript.crotate
+    tab completions:
+        1: 90|180|270
     script:
     - if !<schematic[<player.uuid>_copy].exists>:
         - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
