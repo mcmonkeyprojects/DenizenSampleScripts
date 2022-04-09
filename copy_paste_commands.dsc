@@ -13,7 +13,7 @@
 # @script-version 2.0
 #
 # Dependencies:
-# Selector Tool script - https://forum.denizenscript.com/resources/cuboid-selector-tool.1/
+# Selector Tool script - https://forum.denizenscript.com/resources/area-selector-tool.1/
 #
 # Installation:
 # Just put this script and the selector tool script in your scripts folder and reload.
@@ -58,7 +58,7 @@ cpaste_command:
     permission: dscript.cpaste
     script:
     - if !<schematic[<player.uuid>_copy].exists>:
-        - narrate "<&[error]>You must copy something with <&[emphasis]>/copy <&[base]>or <&[emphasis]>/cload <&[base]>first."
+        - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
         - stop
     - if <player.has_flag[copying]>:
         - narrate "<&[error]>You must wait until the copying is complete before you can paste."
@@ -79,7 +79,7 @@ cpreview_command:
     permission: dscript.cpreview
     script:
     - if !<schematic[<player.uuid>_copy].exists>:
-        - narrate "<&[error]>You must copy something with <&[emphasis]>/copy <&[base]>or <&[emphasis]>/cload <&[base]>first."
+        - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
         - stop
     - if <player.has_flag[copying]>:
         - narrate "<&[error]>You must wait until the copying is complete before you can paste."
@@ -128,7 +128,7 @@ csave_command:
         - narrate "<&[error]>/csave [name]"
         - stop
     - if !<schematic[<player.uuid>_copy].exists>:
-        - narrate "<&[error]>You must copy something with <&[emphasis]>/copy <&[base]>or <&[emphasis]>/cload <&[base]>first."
+        - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
         - stop
     - define name <context.args.first.escaped>
     - if <server.has_file[schematics/<[name]>.schem]>:
@@ -145,7 +145,7 @@ cflip_command:
     permission: dscript.cflip
     script:
     - if !<schematic[<player.uuid>_copy].exists>:
-        - narrate "<&[error]>You must copy something with <&[emphasis]>/copy <&[base]>or <&[emphasis]>/cload <&[base]>first."
+        - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
         - stop
     - choose <context.args.first||null>:
         - case x:
@@ -166,7 +166,7 @@ crotate_command:
     permission: dscript.crotate
     script:
     - if !<schematic[<player.uuid>_copy].exists>:
-        - narrate "<&[error]>You must copy something with <&[emphasis]>/copy <&[base]>or <&[emphasis]>/cload <&[base]>first."
+        - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
         - stop
     - if !<list[90|180|270].contains[<context.args.first||null>]>:
         - narrate "<&[error]>/crotate [90/180/270]"
