@@ -54,6 +54,9 @@ function listEnchant(enchant, level) {
 function appendText(previewObj, text) {
     let color = "#ffffff";
     let bold = false, italic = false, underline = false, strike = false;
+    function resetFormat() {
+        bold = false; strike = false; underline = false; italic = false;
+    }
     for (var i = 0; i < text.length; i++) {
         let char = text.charAt(i);
         if (char == "\n") {
@@ -62,29 +65,29 @@ function appendText(previewObj, text) {
         else if (char == '&' && i + 1 < text.length) {
             i++;
             switch (text.charAt(i)) {
-                case '0': color = "#000000"; break;
-                case '1': color = "#0000AA"; break;
-                case '2': color = "#00AA00"; break;
-                case '3': color = "#00AAAA"; break;
-                case '4': color = "#AA0000"; break;
-                case '5': color = "#AA00AA"; break;
-                case '6': color = "#FFAA00"; break;
-                case '7': color = "#AAAAAA"; break;
-                case '8': color = "#555555"; break;
-                case '9': color = "#5555FF"; break;
-                case 'a': case 'A': color = "#55FF55"; break;
-                case 'b': case 'B': color = "#55FFFF"; break;
-                case 'c': case 'C': color = "#FF5555"; break;
-                case 'd': case 'D': color = "#FF55FF"; break;
-                case 'e': case 'E': color = "#FFFF55"; break;
-                case 'f': case 'F': color = "#ffffff"; break;
-                case 'r': case 'R': color = "#ffffff"; bold = false; strike = false; underline = false; italic = false; break;
+                case '0': color = "#000000"; resetFormat(); break;
+                case '1': color = "#0000AA"; resetFormat(); break;
+                case '2': color = "#00AA00"; resetFormat(); break;
+                case '3': color = "#00AAAA"; resetFormat(); break;
+                case '4': color = "#AA0000"; resetFormat(); break;
+                case '5': color = "#AA00AA"; resetFormat(); break;
+                case '6': color = "#FFAA00"; resetFormat(); break;
+                case '7': color = "#AAAAAA"; resetFormat(); break;
+                case '8': color = "#555555"; resetFormat(); break;
+                case '9': color = "#5555FF"; resetFormat(); break;
+                case 'a': case 'A': color = "#55FF55"; resetFormat(); break;
+                case 'b': case 'B': color = "#55FFFF"; resetFormat(); break;
+                case 'c': case 'C': color = "#FF5555"; resetFormat(); break;
+                case 'd': case 'D': color = "#FF55FF"; resetFormat(); break;
+                case 'e': case 'E': color = "#FFFF55"; resetFormat(); break;
+                case 'f': case 'F': color = "#ffffff"; resetFormat(); break;
+                case 'r': case 'R': color = "#ffffff"; resetFormat(); break;
                 case 'k': case 'K': break;
                 case 'l': case 'L': bold = true; break;
                 case 'm': case 'M': strike = true; break;
                 case 'n': case 'N': underline = true; break;
                 case 'o': case 'O': italic = true; break;
-                case '#': if (i + 7 < text.length) { color = text.substring(i, i + 7); i += 6; } break;
+                case '#': if (i + 7 < text.length) { color = text.substring(i, i + 7); i += 6; resetFormat(); } break;
             }
         }
         else {
