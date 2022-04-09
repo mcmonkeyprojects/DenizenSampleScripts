@@ -32,6 +32,8 @@
 # Use "/selshow" to show your current cuboid selection.
 # Requirers permission "selector_tool.selshow"
 #
+# If you have Depenizen and WorldEdit, this will automatically send your selections to WorldEdit as well.
+#
 # In a script or "/ex" command, use "<player.has_flag[seltool_selection]>" to check if the player has a selection.
 # and "<player.flag[seltool_selection]>" to get the selected area.
 # Flag "seltool_type" defines the current selection type (cuboid, ellipsoid, sphere, polygon).
@@ -243,6 +245,8 @@ selector_tool_leftclick_task:
         - case polygon:
             - flag player seltool_selection:<list[<context.location>].to_polygon.include_y[<context.location.y.add[2]>]>
     - inject selector_tool_status_task path:<[type]>
+    - if <plugin[Depenizen].exists> && <plugin[WorldEdit].exists>:
+        - adjust <player> we_selection:<player.flag[seltool_selection]>
     - determine cancelled
 
 selector_tool_world:
@@ -274,6 +278,8 @@ selector_tool_world:
             - case polygon:
                 - flag player seltool_selection:<player.flag[seltool_selection].with_corner[<context.location>].include_y[<context.location.y>]>
         - inject selector_tool_status_task path:<[type]>
+        - if <plugin[Depenizen].exists> && <plugin[WorldEdit].exists>:
+            - adjust <player> we_selection:<player.flag[seltool_selection]>
         - determine cancelled
         # Prevent misuse
         after player drops selector_tool_item:
