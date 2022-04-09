@@ -29,7 +29,7 @@
                 background: transparent;
                 width: 100%;
                 color: #FFFFFF;
-                font-family: minecraft, Arial, Helvetica, sans-serif;
+                font-family: Arial, Helvetica, sans-serif;
                 font-size: 16px;
                 font-weight: 100;
             }
@@ -41,6 +41,19 @@
                 padding: 5px;
                 padding-top: 2px;
                 border: 1px dotted #ffffff;
+                border-radius: 10px;
+            }
+            .item_preview {
+                background-color: #100010;
+                color: #FFFFFF;
+                text-align: left;
+                padding-left: 5px;
+                padding-bottom: 5px;
+                margin: 2px;
+                font-family: minecraft, Arial, Helvetica, sans-serif;
+                font-size: 16px;
+                font-weight: 100;
+                border: 2px #25015c solid;
                 border-radius: 10px;
             }
         </style>
@@ -56,13 +69,18 @@
                 <br>
                 <span class="material_name" id="material_name">Error?</span>
                 <br><br>
+                <div class="item_preview" id="item_preview">
+                    Not Yet Rendered
+                </div>
+                <br>
+                <br><br>
                 Display Name
                 <br>
-                <textarea class="oneline_text" id="display_name" type="text" rows="1" wrap="off" maxlength="500"></textarea>
+                <textarea class="oneline_text" id="display_name" type="text" rows="1" wrap="off" maxlength="500" oninput="renderPreview()"></textarea>
                 <br><br>
                 Lore
                 <br>
-                <textarea id="lore" style="height:15rem;"></textarea>
+                <textarea id="lore" style="height:15rem;" oninput="renderPreview()"></textarea>
                 <br><br>
                 <input class="form-check-input" type="checkbox" id="hide_data">
                 <label class="form-check-label" for="hide_data">Hide Default Lore Data</label>
