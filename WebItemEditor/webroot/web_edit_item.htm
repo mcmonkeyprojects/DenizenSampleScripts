@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/css/bootstrap_dark.min.css" media="screen">
+        <title>Minecraft Web Item Editor</title>
+        <script src="/js/jquery.min.js"></script>
+        <style>
+            @font-face {
+                font-family: minecraft;
+                src: url("/font/minecraft.woff2") format("woff2"), /* chrome、firefox */
+                url("/font/minecraft.woff") format("woff"), /* chrome、firefox */
+                url("/font/minecraft.ttf") format("truetype"); /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+            }
+            .limit_size {
+                max-width: 1000px;
+            }
+            .input_block {
+                max-width: 600px;
+            }
+            hr {
+                border-color: #FFFFFF;
+            }
+            .form-control {
+                background-color: #101010;
+            }
+            textarea {
+                background: transparent;
+                width: 100%;
+                color: #FFFFFF;
+                font-family: minecraft, Arial, Helvetica, sans-serif;
+                font-size: 16px;
+                font-weight: 100;
+            }
+            .oneline_text {
+                overflow: hidden;
+                height: 2rem;
+            }
+            .material_name {
+                padding: 5px;
+                padding-top: 2px;
+                border: 1px dotted #ffffff;
+                border-radius: 10px;
+            }
+        </style>
+    </head>
+    <body onload="loaditemdata()">
+        <center>
+            <br>
+            <h1>Minecraft Web Item Editor</h1>
+            <hr>
+            <div class="limit_size">
+                <br><br>
+                Material
+                <br>
+                <span class="material_name" id="material_name">Error?</span>
+                <br><br>
+                Display Name
+                <br>
+                <textarea class="oneline_text" id="display_name" type="text" rows="1" wrap="off" maxlength="500"></textarea>
+                <br><br>
+                Lore
+                <br>
+                <textarea id="lore" style="height:15rem;"></textarea>
+                <br><br>
+                <input class="form-check-input" type="checkbox" id="hide_data">
+                <label class="form-check-label" for="hide_data">Hide Default Lore Data</label>
+                <br><br>
+                Enchantments
+                <br>
+                <ul class="list-group" id="existing_enchants">
+                </ul>
+                <br>
+                Add Enchantment:
+                <select id="add_enchantment_type"></select>
+                Level: <input id="add_enchant_level" type="number" value="1" max="100" min="1" style="max-width:4rem;">
+                <button type="button" class="btn btn-primary" id="add_ench_button">Add</button>
+                <br><br>
+                <hr>
+                <button type="button" class="btn btn-success" id="sendback_button">Send Back To Game</button>
+            </div>
+            <br><br><br>
+            <hr>
+            <br>
+            <footer>
+                <a href="https://github.com/mcmonkeyprojects/DenizenSampleScripts/tree/master/WebItemEditor">WebItemEditor</a> was Created by Alex 'mcmonkey' Goodwin and is licensed under <a href="https://github.com/mcmonkeyprojects/DenizenSampleScripts/blob/802cc2271f525c112eeb2f5a299c18174b0d93d0/LICENSE.txt">the MIT license</a>.
+                <br>Made using the <a href="https://www.onlinewebfonts.com/download/6ab539c6fc2b21ff0b149b3d06d7f97c">Minecraft Regular font from OnlineWebFonts.com</a>, licensed as CC-BY 3.0
+                <br>Made using the <a href="https://bootswatch.com/darkly/">Darkly Bootstrap Theme</a> by Thomas Park, which was released under the <a href="https://github.com/thomaspark/bootswatch/blob/7fcf822114e71cfb3b89e98afb58055d21f5e240/LICENSE">MIT License</a>.
+                <br>
+            </footer>
+        </center>
+        <script src="/js/webedititem.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+    </body>
+</html>
