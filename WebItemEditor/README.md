@@ -9,6 +9,7 @@ Note that this does not edit every detail of an item. Just the display name, lor
 
 ### Installation
 
+- Edit your `plugins/Denizen/config.yml` to set `WebServer.Allow` to `true`
 - Add `scripts/web_item_helper.dsc` into your scripts folder.
 - If you don't already have a Denizen webserver:
     - Add `scripts/webserver.dsc` and configure it.
