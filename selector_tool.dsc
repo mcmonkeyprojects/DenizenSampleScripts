@@ -9,7 +9,7 @@
 # @author mcmonkey
 # @date 2022/04/08
 # @denizen-build REL-1765
-# @script-version 2.0
+# @script-version 2.1
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -66,6 +66,9 @@ seltool_command:
     - spheretool
     - ptool
     - polygontool
+    - wand
+    # NOTE: Remove the below alias if you want the WorldEdit "//wand" command to give you a WorldEdit wand instead of a SelTool
+    - /wand
     permission: selector_tool.seltool
     description: Gets a selector tool.
     usage: /seltool (type)
@@ -193,11 +196,15 @@ selector_tool_status_task:
     - define message "<&[base]>Cuboid selection: from <[min]> to <[max]> (size <[size]>, volume <[volume]>)"
     - actionbar <[message]>
     # Loose approximation of the cuboid's scale to prevent trying to spawn a trillion particles
-    - define approx_scale <[cuboid].max.sub[<[cuboid].min>].vector_length>
+    - define approx_scale <[cuboid].size.vector_length>
     - if <[approx_scale]> < 200:
         - playeffect effect:flame at:<[cuboid].shell.parse[center]> offset:0 targets:<player> visibility:32
     - if <[approx_scale]> < 1000:
-        - playeffect effect:barrier at:<[cuboid].outline.parse[center]> offset:0 targets:<player> visibility:32
+        - playeffect effect:block_marker special_data:barrier at:<[cuboid].outline.parse[center]> offset:0 targets:<player> visibility:64
+        - define center <[cuboid].center>
+        - playeffect effect:block_marker special_data:glass at:<[cuboid].with_min[<[cuboid].min.with_x[<[center].x>]>].with_max[<[cuboid].max.with_x[<[center].x>]>].outline.parse[center]> offset:0 targets:<player> visibility:64
+        - playeffect effect:block_marker special_data:glass at:<[cuboid].with_min[<[cuboid].min.with_y[<[center].y>]>].with_max[<[cuboid].max.with_y[<[center].y>]>].outline.parse[center]> offset:0 targets:<player> visibility:64
+        - playeffect effect:block_marker special_data:glass at:<[cuboid].with_min[<[cuboid].min.with_z[<[center].z>]>].with_max[<[cuboid].max.with_z[<[center].z>]>].outline.parse[center]> offset:0 targets:<player> visibility:64
     ellipsoid:
     - define ellipsoid <player.flag[seltool_selection]>
     - define loc "<&[emphasis]><[ellipsoid].location.block.xyz.replace_text[.0].replace_text[,].with[<&[base]>, <&[emphasis]>]><&[base]>"
@@ -208,13 +215,13 @@ selector_tool_status_task:
     - define size <[ellipsoid].size>
     - define y_subellipse <[ellipsoid].with_size[<[size].with_y[0.5]>]>
     - define y_shrunkellipse <[ellipsoid].with_size[<[size].x.sub[1]>,1,<[size].z.sub[1]>]>
-    - playeffect effect:barrier at:<[y_subellipse].shell.exclude[<[y_shrunkellipse].shell>]> offset:0 targets:<player>
+    - playeffect effect:block_marker special_data:barrier at:<[y_subellipse].shell.exclude[<[y_shrunkellipse].shell>]> offset:0 targets:<player>
     - define x_subellipse <[ellipsoid].with_size[<[size].with_x[0.5]>]>
     - define x_shrunkellipse <[ellipsoid].with_size[1,<[size].y.sub[1]>,<[size].z.sub[1]>]>
-    - playeffect effect:barrier at:<[x_subellipse].shell.exclude[<[x_shrunkellipse].shell>]> offset:0 targets:<player>
+    - playeffect effect:block_marker special_data:barrier at:<[x_subellipse].shell.exclude[<[x_shrunkellipse].shell>]> offset:0 targets:<player>
     - define z_subellipse <[ellipsoid].with_size[<[size].with_z[0.5]>]>
     - define z_shrunkellipse <[ellipsoid].with_size[<[size].x.sub[1]>,<[size].y.sub[1]>,1]>
-    - playeffect effect:barrier at:<[z_subellipse].shell.exclude[<[z_shrunkellipse].shell>]> offset:0 targets:<player>
+    - playeffect effect:block_marker special_data:barrier at:<[z_subellipse].shell.exclude[<[z_shrunkellipse].shell>]> offset:0 targets:<player>
     sphere:
     - inject <script> path:ellipsoid
     polygon:
@@ -227,23 +234,26 @@ selector_tool_status_task:
         - if <[approx_scale]> < 200:
             - playeffect effect:flame at:<[polygon].shell> offset:0 targets:<player> visibility:32
         - if <[approx_scale]> < 1000:
-            - playeffect effect:barrier at:<[polygon].outline> offset:0 targets:<player> visibility:32
+            - playeffect effect:block_marker special_data:barrier at:<[polygon].outline> offset:0 targets:<player> visibility:32
 
 selector_tool_leftclick_task:
     type: task
     debug: false
     script:
-    - if <context.location.material.name||air> == air:
-        - stop
+    - define location <context.location||null>
+    - if <[location].material.name||air> == air:
+        - define location <player.cursor_on[30]||null>
+        - if <[location].material.name||air> == air:
+            - stop
     - define type <player.item_in_hand.flag[selector_type]>
     - flag player seltool_type:<[type]>
     - choose <[type]>:
         - case cuboid:
-            - flag player seltool_selection:<context.location.to_cuboid[<context.location>]>
+            - flag player seltool_selection:<[location].to_cuboid[<[location]>]>
         - case ellipsoid sphere:
-            - flag player seltool_selection:<context.location.to_ellipsoid[1,1,1]>
+            - flag player seltool_selection:<[location].to_ellipsoid[1,1,1]>
         - case polygon:
-            - flag player seltool_selection:<list[<context.location>].to_polygon.include_y[<context.location.y.add[2]>]>
+            - flag player seltool_selection:<list[<[location]>].to_polygon.include_y[<[location].y.add[2]>]>
     - inject selector_tool_status_task path:<[type]>
     - if <plugin[Depenizen].exists> && <plugin[WorldEdit].exists>:
         - adjust <player> we_selection:<player.flag[seltool_selection]>
@@ -257,26 +267,29 @@ selector_tool_world:
         on player left clicks block with:selector_tool_item:
         - inject selector_tool_leftclick_task
         on player right clicks block with:selector_tool_item:
-        - if <context.location.material.name||air> == air:
-            - stop
+        - define location <context.location||null>
+        - if <[location].material.name||air> == air:
+            - define location <player.cursor_on[30]||null>
+            - if <[location].material.name||air> == air:
+                - stop
         - if !<player.has_flag[seltool_selection]>:
             - inject selector_tool_leftclick_task
             - stop
         - define type <player.item_in_hand.flag[selector_type]>
-        - if <player.flag[seltool_selection].world.name> != <context.location.world.name> || <player.flag[seltool_type]> != <[type]>:
+        - if <player.flag[seltool_selection].world.name> != <[location].world.name> || <player.flag[seltool_type]> != <[type]>:
             - narrate "<&c>You must restart your selection by left clicking."
             - stop
         - choose <[type]>:
             - case cuboid ellipsoid:
-                - flag player seltool_selection:<player.flag[seltool_selection].include[<context.location>]>
+                - flag player seltool_selection:<player.flag[seltool_selection].include[<[location]>]>
             - case sphere:
                 - define cur_size <player.flag[seltool_selection].size.x>
-                - define new_size <player.flag[seltool_selection].location.distance[<context.location>]>
+                - define new_size <player.flag[seltool_selection].location.distance[<[location]>]>
                 - if <[new_size]> < <[cur_size]>:
                     - define new_size <[cur_size]>
                 - flag player seltool_selection:<player.flag[seltool_selection].with_size[<[new_size]>,<[new_size]>,<[new_size]>]>
             - case polygon:
-                - flag player seltool_selection:<player.flag[seltool_selection].with_corner[<context.location>].include_y[<context.location.y>]>
+                - flag player seltool_selection:<player.flag[seltool_selection].with_corner[<[location]>].include_y[<[location].y>]>
         - inject selector_tool_status_task path:<[type]>
         - if <plugin[Depenizen].exists> && <plugin[WorldEdit].exists>:
             - adjust <player> we_selection:<player.flag[seltool_selection]>
