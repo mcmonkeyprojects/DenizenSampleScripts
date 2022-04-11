@@ -8,8 +8,8 @@
 #
 # @author mcmonkey
 # @date 2022/04/01
-# @denizen-build REL-1764
-# @script-version 1.0
+# @denizen-build REL-1765
+# @script-version 1.1
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -90,4 +90,6 @@ simplexreplacewand_world:
         - define replacements <context.item.flag[replace_types]>
         - define replacelen <[replacements].size>
         - foreach <[center].find_blocks[<context.item.flag[applies_to]>].within[<context.item.flag[brush_size]>]> as:block:
-            - modifyblock <[block]> <[replacements].get[<[block].div[<[scale]>].simplex_3d.add[1].div[2].mul[<[replacelen]>].add[1].round_down>]>
+            - define old_type <[block].material>
+            - define new_type <material[<[replacements].get[<[block].div[<[scale]>].simplex_3d.add[1].div[2].mul[<[replacelen]>].add[1].round_down>]>]>
+            - modifyblock <[block]> <[new_type].with_map[<[old_type].property_map.filter_tag[<[old_type].supports[<[filter_key]>]>]>]>
