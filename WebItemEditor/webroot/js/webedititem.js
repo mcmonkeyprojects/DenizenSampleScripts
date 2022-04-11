@@ -88,6 +88,7 @@ function appendText(previewObj, text) {
                 case 'n': case 'N': underline = true; break;
                 case 'o': case 'O': italic = true; break;
                 case '#': if (i + 7 < text.length) { color = text.substring(i, i + 7); i += 6; resetFormat(); } break;
+                case 'x': case 'X': if (i + 13 < text.length) { console.log("color " + text.substring(i + 1, i + 13).replaceAll('&', '')); color = "#" + text.substring(i + 1, i + 13).replaceAll('&', ''); i += 12; resetFormat(); } break;
             }
         }
         else {
