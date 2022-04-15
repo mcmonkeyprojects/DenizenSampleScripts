@@ -10,7 +10,7 @@
 # @date 2020/12/16
 # @updated 2022-04-08
 # @denizen-build REL-1765
-# @script-version 2.0
+# @script-version 2.2
 #
 # Dependencies:
 # Selector Tool script - https://forum.denizenscript.com/resources/area-selector-tool.1/
@@ -45,7 +45,7 @@ ccopy_command:
         - schematic unload name:<player.uuid>_copy
     - narrate <&[base]>Copying...
     - flag player copying duration:1d
-    - ~schematic create name:<player.uuid>_copy <player.location.block> area:<player.flag[seltool_selection]> delayed flags
+    - ~schematic create name:<player.uuid>_copy <player.location.block> area:<player.flag[seltool_selection]> delayed flags entities max_delay_ms:25
     - flag player copying:!
     - narrate <&[base]>Copied.
 
@@ -67,9 +67,9 @@ cpaste_command:
         - stop
     - narrate <&[base]>Pasting...
     - if <context.args.first||null> == noair:
-        - ~schematic paste name:<player.uuid>_copy <player.location.block> noair delayed
+        - ~schematic paste name:<player.uuid>_copy <player.location.block> noair delayed entities max_delay_ms:25
     - else:
-        - ~schematic paste name:<player.uuid>_copy <player.location.block> delayed
+        - ~schematic paste name:<player.uuid>_copy <player.location.block> delayed entities max_delay_ms:25
     - narrate <&[base]>Pasted.
 
 cpreview_command:
@@ -94,7 +94,7 @@ cpreview_command:
     - if <duration[<[duration]>]||null> == null:
         - narrate "<&[error]>That preview duration is invalid."
         - stop
-    - if <context.args.get[2]> == noair:
+    - if <context.args.get[2]||null> == noair:
         - ~schematic paste name:<player.uuid>_copy <player.location.block> noair delayed fake_to:<player.location.find_players_within[200]> fake_duration:<[duration]>
     - else:
         - ~schematic paste name:<player.uuid>_copy <player.location.block> delayed fake_to:<player.location.find_players_within[200]> fake_duration:<[duration]>
