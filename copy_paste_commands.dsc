@@ -8,9 +8,9 @@
 #
 # @author mcmonkey
 # @date 2020/12/16
-# @updated 2022-04-08
+# @updated 2022-04-22
 # @denizen-build REL-1765
-# @script-version 2.2
+# @script-version 2.3
 #
 # Dependencies:
 # Selector Tool script - https://forum.denizenscript.com/resources/area-selector-tool.1/
@@ -21,21 +21,23 @@
 # Usage:
 # Refer to the selector tool info for how to get and use a SelTool.
 #
-# Use "/ccopy" to copy your selected area (relative to where you stand).
-# Use "/crotate [90/180/270]" or "/cflip [x/z]" to rotate/flip the copy.
-# Use "/cpreview [time] [noair]" to show a temporary preview of how it will paste.
-# Use "/cpaste [noair]" to actually paste the copy in (relative to where you stand).
-# Use "/csave [name]" to save the copy to file and "/cload [name]" to load it back.
+# Use "/selcopy" to copy your selected area (relative to where you stand).
+# Use "/selrotate [90/180/270]" or "/selflip [x/z]" to rotate/flip the copy.
+# Use "/selpreview [time] [noair]" to show a temporary preview of how it will paste.
+# Use "/selpaste [noair]" to actually paste the copy in (relative to where you stand).
+# Use "/selsave [name]" to save the copy to file and "/selload [name]" to load it back.
 #
 # ---------------------------- END HEADER ----------------------------
 
-ccopy_command:
+selcopy_command:
     type: command
     debug: false
-    name: ccopy
-    usage: /ccopy
+    name: selcopy
+    usage: /selcopy
     description: Copies a place.
-    permission: dscript.ccopy
+    permission: dscript.selcopy
+    aliases:
+    - ccopy
     script:
     - if !<player.has_flag[seltool_selection]>:
         - narrate "<&[error]>You need a <&[emphasis]>/seltool <&[error]>selection to use this command."
@@ -49,18 +51,20 @@ ccopy_command:
     - flag player copying:!
     - narrate <&[base]>Copied.
 
-cpaste_command:
+selpaste_command:
     type: command
     debug: false
-    name: cpaste
-    usage: /cpaste [noair]
+    name: selpaste
+    usage: /selpaste [noair]
     description: Pastes what you copy.
-    permission: dscript.cpaste
+    permission: dscript.selpaste
+    aliases:
+    - cpaste
     tab completions:
         1: noair
     script:
     - if !<schematic[<player.uuid>_copy].exists>:
-        - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
+        - narrate "<&[error]>You must copy something with <&[emphasis]>/selcopy <&[base]>or <&[emphasis]>/selload <&[base]>first."
         - stop
     - if <player.has_flag[copying]>:
         - narrate "<&[error]>You must wait until the copying is complete before you can paste."
@@ -72,19 +76,21 @@ cpaste_command:
         - ~schematic paste name:<player.uuid>_copy <player.location.block> delayed entities max_delay_ms:25
     - narrate <&[base]>Pasted.
 
-cpreview_command:
+selpreview_command:
     type: command
     debug: false
-    name: cpreview
-    usage: /cpreview [time] [noair]
+    name: selpreview
+    usage: /selpreview [time] [noair]
     description: Previews an available paste.
-    permission: dscript.cpreview
+    permission: dscript.selpreview
+    aliases:
+    - cpreview
     tab completions:
         1: 10s|30s|1m|5m|10m
         2: noair
     script:
     - if !<schematic[<player.uuid>_copy].exists>:
-        - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
+        - narrate "<&[error]>You must copy something with <&[emphasis]>/selcopy <&[base]>or <&[emphasis]>/selload <&[base]>first."
         - stop
     - if <player.has_flag[copying]>:
         - narrate "<&[error]>You must wait until the copying is complete before you can paste."
@@ -100,18 +106,20 @@ cpreview_command:
         - ~schematic paste name:<player.uuid>_copy <player.location.block> delayed fake_to:<player.location.find_players_within[200]> fake_duration:<[duration]>
     - narrate <&[base]>Pasted.
 
-cload_command:
+selload_command:
     type: command
     debug: false
-    name: cload
-    usage: /cload [name]
+    name: selload
+    usage: /selload [name]
     description: Loads a saved area copy.
-    permission: dscript.cload
+    permission: dscript.selload
+    aliases:
+    - cload
     tab completions:
         1: <list>
     script:
     - if <context.args.is_empty>:
-        - narrate "<&[error]>/cload [name]"
+        - narrate "<&[error]>/selload [name]"
         - stop
     - define name <context.args.first.escaped>
     - if !<server.has_file[schematics/<[name]>.schem]>:
@@ -123,21 +131,23 @@ cload_command:
     - ~schematic load name:<player.uuid>_copy filename:<[name]> delayed
     - narrate <&[base]>Loaded.
 
-csave_command:
+selsave_command:
     type: command
     debug: false
-    name: csave
-    usage: /csave [name]
+    name: selsave
+    usage: /selsave [name]
     description: Saves your copied area to file.
-    permission: dscript.csave
+    permission: dscript.selsave
+    aliases:
+    - csave
     tab completions:
         1: <list>
     script:
     - if <context.args.is_empty>:
-        - narrate "<&[error]>/csave [name]"
+        - narrate "<&[error]>/selsave [name]"
         - stop
     - if !<schematic[<player.uuid>_copy].exists>:
-        - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
+        - narrate "<&[error]>You must copy something with <&[emphasis]>/selcopy <&[base]>or <&[emphasis]>/selload <&[base]>first."
         - stop
     - define name <context.args.first.escaped>
     - if <server.has_file[schematics/<[name]>.schem]>:
@@ -145,18 +155,20 @@ csave_command:
     - ~schematic save name:<player.uuid>_copy filename:<[name]> delayed
     - narrate <&[base]>Saved.
 
-cflip_command:
+selflip_command:
     type: command
     debug: false
-    name: cflip
-    usage: /cflip [x/z]
+    name: selflip
+    usage: /selflip [x/z]
     description: Flips your copied area.
-    permission: dscript.cflip
+    permission: dscript.selflip
+    aliases:
+    - cflip
     tab completions:
         1: x|z
     script:
     - if !<schematic[<player.uuid>_copy].exists>:
-        - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
+        - narrate "<&[error]>You must copy something with <&[emphasis]>/selcopy <&[base]>or <&[emphasis]>/selload <&[base]>first."
         - stop
     - choose <context.args.first||null>:
         - case x:
@@ -166,23 +178,25 @@ cflip_command:
             - ~schematic name:<player.uuid>_copy flip_z delayed
             - narrate "<&[base]>Flipped your copy around the Z axis."
         - default:
-            - narrate "<&[error]>/cflip [x/z]"
+            - narrate "<&[error]>/selflip [x/z]"
 
-crotate_command:
+selrotate_command:
     type: command
     debug: false
-    name: crotate
-    usage: /crotate [90/180/270]
+    name: selrotate
+    usage: /selrotate [90/180/270]
     description: Rotates your copied area.
-    permission: dscript.crotate
+    permission: dscript.selrotate
+    aliases:
+    - crotate
     tab completions:
         1: 90|180|270
     script:
     - if !<schematic[<player.uuid>_copy].exists>:
-        - narrate "<&[error]>You must copy something with <&[emphasis]>/ccopy <&[base]>or <&[emphasis]>/cload <&[base]>first."
+        - narrate "<&[error]>You must copy something with <&[emphasis]>/selcopy <&[base]>or <&[emphasis]>/selload <&[base]>first."
         - stop
     - if !<list[90|180|270].contains[<context.args.first||null>]>:
-        - narrate "<&[error]>/crotate [90/180/270]"
+        - narrate "<&[error]>/selrotate [90/180/270]"
         - stop
     - ~schematic name:<player.uuid>_copy rotate angle:<context.args.first> delayed
     - narrate "<&[base]>Rotated your copy by <&[emphasis]><context.args.first><&[base]>."
