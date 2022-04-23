@@ -101,9 +101,9 @@ magic_sidebar_command:
     script:
     - if <player.has_flag[sidebar_disabled]>:
         - flag player sidebar_disabled:!
-        - narrate "<&b>Sidebar enabled."
+        - narrate "<&[base]>Sidebar enabled."
     - else:
         - flag player sidebar_disabled
-        - narrate "<&b>Sidebar disabled."
+        - narrate "<&[base]>Sidebar disabled."
         - wait 1
         - sidebar remove players:<player>

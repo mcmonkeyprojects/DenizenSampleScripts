@@ -192,10 +192,10 @@ multinpc_wand_item:
     type: item
     debug: false
     material: blaze_rod
-    display name: <&6>MultiNPC Selector Wand
+    display name: <&[item]>MultiNPC Selector Wand
     lore:
-    - <&7>Right click to add an NPC to your selection.
-    - <&7>Left click or shift-right click to remove an NPC.
+    - <&[lore]>Right click to add an NPC to your selection.
+    - <&[lore]>Left click or shift-right click to remove an NPC.
     enchantments:
     - luck:1
     mechanisms:

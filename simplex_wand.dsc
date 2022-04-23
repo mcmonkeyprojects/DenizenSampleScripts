@@ -72,7 +72,7 @@ simplereplacewand_item:
     type: item
     debug: false
     material: golden_sword
-    display name: <&[emphasis]>Gradient Wand
+    display name: <&[item]>Gradient Wand
     enchantments:
     - luck_of_the_sea:1
     mechanisms:

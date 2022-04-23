@@ -27,6 +27,6 @@ chat_pings_world:
         # You might prefer: contains[regex:\b<[player].name>\b]
         # As that will test "word borders" (ie, don't match if the name is in the middle of a word)
         - foreach <server.online_players.filter_tag[<context.message.contains[<[filter_value].name>]>]> as:player:
-            - narrate targets:<[player]> "<&6><player.name><&b> mentioned you!"
+            - narrate targets:<[player]> "<&[emphasis]><player.name><&[base]> mentioned you!"
             - playsound <[player]> sound:block_note_block_bell
-            - toast targets:<[player]> "<&6><player.name><&b> mentioned you!" frame:goal
+            - toast targets:<[player]> "<&[emphasis]><player.name><&[base]> mentioned you!" frame:goal

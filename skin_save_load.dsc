@@ -34,7 +34,7 @@ npc_skin_save_command:
     script:
     - inject npc_saveskin_command_validate
     - flag server npc_skins.<context.args.get[1].escaped>:<player.selected_npc.skin_blob>;<player.selected_npc.name>
-    - narrate "<green>Skin saved."
+    - narrate "<&[base]>Skin saved."
 
 npc_skin_load_command:
     type: command
@@ -46,18 +46,18 @@ npc_skin_load_command:
     script:
     - inject npc_saveskin_command_validate
     - if !<server.has_flag[npc_skins.<context.args.get[1].escaped>]>:
-      - narrate "<red>No skin found for the name specified."
+      - narrate "<&[error]>No skin found for the name specified."
       - stop
     - adjust <player.selected_npc> skin_blob:<server.flag[npc_skins.<context.args.get[1].escaped>]>
-    - narrate "<green>Skin loaded!"
+    - narrate "<&[base]>Skin loaded!"
 
 npc_saveskin_command_validate:
     type: task
     debug: false
     script:
     - if <context.args.size> == 0:
-      - narrate "<red>Must specify a skin name."
+      - narrate "<&[error]>Must specify a skin name."
       - stop
     - if <player.selected_npc||null> == null:
-      - narrate "<red>Must select an NPC!"
+      - narrate "<&[error]>Must select an NPC!"
       - stop

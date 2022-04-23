@@ -44,14 +44,14 @@ selector_tool_item:
     type: item
     debug: false
     material: blaze_rod
-    display name: <gold><bold>Unknown Selector Tool
+    display name: <&[item]>Unknown Selector Tool
     enchantments:
     - vanishing_curse:1
     mechanisms:
         hides: ENCHANTS
     lore:
-    - <&7>Left click to start a selection.
-    - <&7>Right click to expand the selection.
+    - <&[lore]>Left click to start a selection.
+    - <&[lore]>Right click to expand the selection.
 
 seltool_command:
     type: command
@@ -76,9 +76,9 @@ seltool_command:
         1: cuboid|ellipsoid|sphere|polygon
     data:
         polygon_lore:
-        - <&7>Left click to start a polygon selection.
-        - <&7>Right click to add a corner to the polygon.
-        - <&7>Use <&b>/pheight <&7>to expand the vertical height.
+        - <&[lore]>Left click to start a polygon selection.
+        - <&[lore]>Right click to add a corner to the polygon.
+        - <&[lore]>Use <&[emphasis]>/pheight <&[lore]>to expand the vertical height.
     script:
     - define type cuboid
     - if <context.args.size> >= 1:
@@ -93,7 +93,7 @@ seltool_command:
     - else if <context.alias> in spheretool:
         - define type sphere
     - definemap adjustments:
-         display: <gold><bold><[type].to_titlecase> Selector Tool
+         display: <&[item]><[type].to_titlecase> Selector Tool
          flag: selector_type:<[type]>
     - if <[type]> == polygon:
         - define adjustments.lore:<script.parsed_key[data.polygon_lore]>
@@ -112,11 +112,11 @@ selheight_command:
     usage: /selheight (y)
     script:
     - if !<player.has_flag[seltool_selection]>:
-        - narrate "<red>You don't have any area selected."
+        - narrate "<&[error]>You don't have any area selected."
         - stop
     - define y <context.args.get[1]||<player.location.y>>
     - if !<[y].is_decimal>:
-        - narrate "<red>Y value must be a number."
+        - narrate "<&[error]>Y value must be a number."
         - stop
     - choose <player.flag[seltool_type]>:
         - case polygon:
@@ -154,7 +154,7 @@ selnote_command:
     usage: /selnote [name]
     script:
     - if !<player.has_flag[seltool_selection]>:
-        - narrate "<red>You don't have any area selected."
+        - narrate "<&[error]>You don't have any area selected."
         - stop
     - if <context.args.size> != 1:
         - narrate "/selnote [name]"
@@ -177,7 +177,7 @@ selshow_command:
     usage: /selshow
     script:
     - if !<player.has_flag[seltool_selection]>:
-        - narrate "<red>You don't have any area selected."
+        - narrate "<&[error]>You don't have any area selected."
         - stop
     - inject selector_tool_status_task path:<player.flag[seltool_type]>
     - narrate <[message]>
@@ -277,7 +277,7 @@ selector_tool_world:
             - stop
         - define type <player.item_in_hand.flag[selector_type]>
         - if <player.flag[seltool_selection].world.name> != <[location].world.name> || <player.flag[seltool_type]> != <[type]>:
-            - narrate "<&c>You must restart your selection by left clicking."
+            - narrate "<&[error]>You must restart your selection by left clicking."
             - stop
         - choose <[type]>:
             - case cuboid ellipsoid:

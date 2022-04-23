@@ -33,11 +33,11 @@ sendplayer_command:
     permission: denizen.sendplayer
     script:
     - if <context.args.size> < 2:
-        - narrate "<red>/sendplayer [player] [server]"
+        - narrate "<&[error]>/sendplayer [player] [server]"
         - stop
     - define target <server.match_player[<context.args.get[1]>]||null>
     - if <[target]> == null:
-        - narrate "<red>Invalid player name specified."
+        - narrate "<&[error]>Invalid player name specified."
         - stop
     - adjust <[target]> send_to:<context.args.get[2]>
-    - narrate "<green>Sent <[target].name> to server '<context.args.get[2]>'."
+    - narrate "<&[base]>Sent <[target].name.custom_color[emphasis]> to server '<context.args.get[2].custom_color[emphasis]>'."

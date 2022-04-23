@@ -46,25 +46,25 @@ npc_chatter_command:
     permission: script.npcchatter
     script:
     - if !<list[set|add|off].contains[<context.args.get[1]||null>]>:
-        - narrate "<&c>/npcchatter off - Disable chatterishness"
-        - narrate "<&c>/npcchatter set [message] - Set the message"
-        - narrate "<&c>/npcchatter add [message] - Add a single message (to choose randomly from many)"
+        - narrate "<&[error]>/npcchatter off <&[warning]>- Disable chatterishness"
+        - narrate "<&[error]>/npcchatter set [message] <&[warning]>- Set the message"
+        - narrate "<&[error]>/npcchatter add [message] <&[warning]>- Add a single message (to choose randomly from many)"
         - stop
     - if <player.selected_npc||null> == null:
-        - narrate "<&c>Please select an NPC!"
+        - narrate "<&[error]>Please select an NPC!"
         - stop
     - if <context.args.get[1]> == off:
         - if <npc.script.name||null> != npc_chatter_assignment:
-            - narrate "<&c>That NPC is not a chatter."
+            - narrate "<&[error]>That NPC is not a chatter."
             - stop
         - assignment remove
         - flag <npc> message:!
-        - narrate "<&a>Successfully removed chatterishness."
+        - narrate "<&[base]>Successfully removed chatterishness."
         - stop
     - assignment set script:npc_chatter_assignment npc:<player.selected_npc>
     - if <context.args.get[1]> == set:
         - flag <player.selected_npc> message:<context.raw_args.after[set].trim>
-        - narrate "<&a>Message set."
+        - narrate "<&[base]>Message set."
     - else if <context.args.get[1]> == add:
         - flag <player.selected_npc> message:->:<context.raw_args.after[add].trim>
-        - narrate "<&a>Message added."
+        - narrate "<&[base]>Message added."
