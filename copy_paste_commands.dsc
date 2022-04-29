@@ -27,6 +27,8 @@
 # Use "/selpaste [noair]" to actually paste the copy in (relative to where you stand).
 # Use "/selsave [name]" to save the copy to file and "/selload [name]" to load it back.
 #
+# Supplies custom event id 'selpaste_pasted', with context 'selection_area' as an AreaObject of the area of the paste
+#
 # ---------------------------- END HEADER ----------------------------
 
 selcopy_command:
@@ -70,10 +72,14 @@ selpaste_command:
         - narrate "<&[error]>You must wait until the copying is complete before you can paste."
         - stop
     - narrate <&[base]>Pasting...
+    - define area <schematic[<player.uuid>_copy].cuboid[<player.location.block>]>
     - if <context.args.first||null> == noair:
         - ~schematic paste name:<player.uuid>_copy <player.location.block> noair delayed entities max_delay_ms:25
     - else:
         - ~schematic paste name:<player.uuid>_copy <player.location.block> delayed entities max_delay_ms:25
+    - definemap context:
+        selection_area: <[area]>
+    - customevent id:selpaste_pasted context:<[context]>
     - narrate <&[base]>Pasted.
 
 selpreview_command:
