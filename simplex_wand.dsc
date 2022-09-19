@@ -7,9 +7,10 @@
 # +----------------------
 #
 # @author mcmonkey
-# @date 2022/04/01
-# @denizen-build REL-1765
-# @script-version 1.1
+# @date 2022-04-01
+# @updated 2022-09-19
+# @denizen-build REL-1777
+# @script-version 1.2
 #
 # Installation:
 # Just put the script in your scripts folder and reload.
@@ -59,10 +60,10 @@ simplexreplacewand_command:
         - stop
     - define replace_types <list>
     - foreach <context.args.get[4].to[last]> as:replace_entry:
-        - if !<[replace_entry].as_material.exists>:
+        - if !<[replace_entry].as[material].exists>:
             - narrate "<&[error]>Invalid pattern material '<[replace_entry]>'"
             - stop
-        - define replace_types:->:<[replace_entry].as_material.name>
+        - define replace_types:->:<[replace_entry].as[material].name>
     - define "lore:->:<&[base]>Pattern: <&[emphasis]><[replace_types].deduplicate.space_separated>"
     - define wand <item[simplereplacewand_item].with_single[lore=<[lore]>].with_flag[scale:<[scale]>].with_flag[brush_size:<[brush_size]>].with_flag[applies_to:<context.args.first>].with_flag[replace_types:<[replace_types]>]>
     - give <[wand]>

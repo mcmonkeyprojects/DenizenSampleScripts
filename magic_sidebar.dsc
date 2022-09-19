@@ -7,9 +7,10 @@
 # +--------------------------
 #
 # @author mcmonkey
-# @date 2019/03/01
-# @denizen-build REL-1714
-# @script-version 1.0
+# @date 2019-03-01
+# @updated 2022-09-19
+# @denizen-build REL-1777
+# @script-version 1.1
 #
 # Installation:
 # 1. Put the script in your scripts folder.
@@ -34,11 +35,11 @@ magic_sidebar_config:
     # Note that width must always be less than the line's actual length.
     # There should also be at least one normal line that's as wide as the width, to prevent the sidebar resizing constantly.
     lines:
-    - "[scroll:20/5]<&a>Welcome to <&6>my server<&a>, <&b><player.name><&a>!"
-    - "<&8>-----------------------"
-    - "Ping: <&b><player.ping>"
-    - "Location: <&b><player.location.xyz.replace_text[,].with[<&f>,<&b>]>"
-    - "Online Players: <&b><server.online_players.size><&f>/<&b><server.max_players>"
+    - [scroll:20/5]<&a>Welcome to <&6>my server<&a>, <&b><player.name><&a>!
+    - <&8>-----------------------
+    - Ping: <&b><player.ping>
+    - Location: <&b><player.location.xyz.replace_text[,].with[<&f>,<&b>]>
+    - Online Players: <&b><server.online_players.size><&f>/<&b><server.max_players>
 # ------------------------- End of configuration -------------------------
 
 magic_sidebar_world:
@@ -66,7 +67,7 @@ magic_sidebar_lines_proc:
             - define width <[line].after[<&co>].before[/]>
             - define rate <[line].after[/].before[<&rb>]>
             - define line <[line].after[<&rb>]>
-            - define index <server.current_time_millis.div[1000].mul[<[rate]>].round.mod[<[line].strip_color.length>].add[1]>
+            - define index <util.current_time_millis.div[1000].mul[<[rate]>].round.mod[<[line].strip_color.length>].add[1]>
             - define end <[index].add[<[width]>]>
             - repeat <[line].length> as:charpos:
                 - if <[line].char_at[<[charpos]>]> == <&ss>:

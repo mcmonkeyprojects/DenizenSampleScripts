@@ -7,8 +7,8 @@
 # +----------------------------
 #
 # @author mcmonkey
-# @date 2021/11/06
-# @updated 2022/03/21
+# @date 2021-11-06
+# @updated 2022-03-21
 # @denizen-build REL-1762
 # @script-version 1.1
 #

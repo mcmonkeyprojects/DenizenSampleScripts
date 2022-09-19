@@ -7,7 +7,7 @@
 # +----------------------
 #
 # @author mcmonkey
-# @date 2022/04/08
+# @date 2022-04-08
 # @denizen-build REL-1765
 # @script-version 2.1
 #

@@ -7,10 +7,10 @@
 # +-------------------------------
 #
 # @author mcmonkey
-# @date 2020/12/16
-# @updated 2022-04-22
-# @denizen-build REL-1765
-# @script-version 2.3
+# @date 2020-12-16
+# @updated 2022-09-19
+# @denizen-build REL-1777
+# @script-version 2.4
 #
 # Dependencies:
 # Selector Tool script - https://forum.denizenscript.com/resources/area-selector-tool.1/
@@ -128,7 +128,7 @@ selload_command:
         - narrate "<&[error]>/selload [name]"
         - stop
     - define name <context.args.first.escaped>
-    - if !<server.has_file[schematics/<[name]>.schem]>:
+    - if !<util.has_file[schematics/<[name]>.schem]>:
         - narrate "<&[error]>Unknown area save."
         - stop
     - if <schematic[<player.uuid>_copy].exists>:
@@ -156,7 +156,7 @@ selsave_command:
         - narrate "<&[error]>You must copy something with <&[emphasis]>/selcopy <&[base]>or <&[emphasis]>/selload <&[base]>first."
         - stop
     - define name <context.args.first.escaped>
-    - if <server.has_file[schematics/<[name]>.schem]>:
+    - if <util.has_file[schematics/<[name]>.schem]>:
         - narrate "<&[error]>Overwriting existing area save."
     - ~schematic save name:<player.uuid>_copy filename:<[name]> delayed
     - narrate <&[base]>Saved.

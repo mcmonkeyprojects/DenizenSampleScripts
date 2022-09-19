@@ -7,7 +7,7 @@
 # +----------------------
 #
 # @author mcmonkey
-# @date 2019/03/01
+# @date 2019-03-01
 # @denizen-build REL-1700
 # @script-version 1.0
 #
