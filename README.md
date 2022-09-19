@@ -15,6 +15,7 @@ Find information about these scripts on the forum:
 - **Chat Pings:** https://forum.denizenscript.com/resources/chat-pings.7/
 - **Torch Light:** https://forum.denizenscript.com/resources/torch-light.11/
 - **Head List:** https://forum.denizenscript.com/resources/in-game-custom-head-item-list.9/
+- **Item Clear Command:** https://forum.denizenscript.com/resources/clearitems-utility-with-history.118/
 
 **NPC Stuff:**
 - **NPC Chatter:** https://forum.denizenscript.com/threads/npc-chatter.148/
