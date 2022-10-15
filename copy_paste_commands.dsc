@@ -26,10 +26,23 @@
 # Use "/selpreview [time] [noair]" to show a temporary preview of how it will paste.
 # Use "/selpaste [noair]" to actually paste the copy in (relative to where you stand).
 # Use "/selsave [name]" to save the copy to file and "/selload [name]" to load it back.
+# Use "/selundo" to undo your last "/selpaste". Can config undo tracker size via the config below.
+# Use "/selredo" to redo something that you undid.
+#
+# Permissions are in the format "dscript.selcopy" for each command (so also "dscript.selpaste", etc.)
 #
 # Supplies custom event id 'selpaste_pasted', with context 'selection_area' as an AreaObject of the area of the paste
 #
 # ---------------------------- END HEADER ----------------------------
+
+# + CONFIG: Configure settings here.
+selcopy_config:
+    type: data
+    debug: false
+    # How many recent undoable actions to retain. 0 to disable.
+    max_undos: 10
+
+# ---------------------------- END CONFIG ----------------------------
 
 selcopy_command:
     type: command
@@ -71,12 +84,14 @@ selpaste_command:
     - if <player.has_flag[copying]>:
         - narrate "<&[error]>You must wait until the copying is complete before you can paste."
         - stop
+    - define location <player.location.block>
+    - define area <schematic[<player.uuid>_copy].cuboid[<[location]>]>
+    - inject selcopy_undo_inject
     - narrate <&[base]>Pasting...
-    - define area <schematic[<player.uuid>_copy].cuboid[<player.location.block>]>
     - if <context.args.first||null> == noair:
-        - ~schematic paste name:<player.uuid>_copy <player.location.block> noair delayed entities max_delay_ms:25
+        - ~schematic paste name:<player.uuid>_copy <[location]> noair delayed entities max_delay_ms:25
     - else:
-        - ~schematic paste name:<player.uuid>_copy <player.location.block> delayed entities max_delay_ms:25
+        - ~schematic paste name:<player.uuid>_copy <[location]> delayed entities max_delay_ms:25
     - definemap context:
         selection_area: <[area]>
     - customevent id:selpaste_pasted context:<[context]>
@@ -206,3 +221,81 @@ selrotate_command:
         - stop
     - ~schematic name:<player.uuid>_copy rotate angle:<context.args.first> delayed
     - narrate "<&[base]>Rotated your copy by <&[emphasis]><context.args.first><&[base]>."
+
+selcopy_undo_inject:
+    type: task
+    debug: false
+    definitions: location|area
+    script:
+    - define undos <script[selcopy_config].data_key[max_undos]>
+    - if <[undos]> > 0:
+        - narrate "<&[base]>Making an undo copy..."
+        - define history <player.flag[selcopypaste.undos]||<list>>
+        - if <[history].size> > <[undos]>:
+            - schematic unload name:selcopy_backup_<[history].first.get[id]>
+            - define history[1]:<-
+        - definemap backup:
+            id: <util.random_uuid>
+            location: <[location]>
+            area: <[area]>
+            time: <util.time_now>
+        - define history:->:<[backup]>
+        - flag <player> selcopypaste.undos:<[history]> expire:1d
+        - ~schematic create name:selcopy_backup_<[backup.id]> <[location]> area:<[area]> delayed flags entities max_delay_ms:25
+
+selundo_command:
+    type: command
+    debug: false
+    name: selundo
+    usage: /selundo
+    description: Undoes your last paste.
+    permission: dscript.selundo
+    aliases:
+    - cundo
+    script:
+    - define history <player.flag[selcopypaste.undos]||<list>>
+    - if <[history].is_empty>:
+        - narrate "<&[error]>You have nothing left to undo."
+        - stop
+    - define to_undo <[history].last>
+    - flag <player> selcopypaste.undos[last]:<-
+    - if !<schematic[selcopy_backup_<[to_undo.id]>].exists>:
+        - flag <player> selcopypaste.undos:!
+        - narrate "<&[error]>The server has restarted since your last paste, cannot undo."
+        - stop
+    - define text_time <[to_undo.time].from_now.formatted_words.custom_color[emphasis]>
+    - define text_location <&[emphasis]><[to_undo.location].simple.replace_text[,].with[<&[base]>,<&[emphasis]>]><&[base]>
+    - narrate "<&[base]>Will undo your paste from <[text_time]> ago at <[text_location]>, making backup..."
+    - definemap redo:
+        id: <util.random_uuid>
+        location: <[to_undo.location]>
+        area: <[to_undo.area]>
+    - ~schematic create name:selcopy_backup_<[redo.id]> <[to_undo.location]> area:<[to_undo.area]> delayed flags entities max_delay_ms:25
+    - narrate "<&[base]>Backup made, performing undo..."
+    - ~schematic paste name:selcopy_backup_<[to_undo.id]> <[to_undo.location]> delayed entities max_delay_ms:25
+    - schematic unload name:selcopy_backup_<[to_undo.id]>
+    - narrate "<&[base]>Undone! If you didn't mean to undo, you can <&[emphasis]>/selredo<&[base]>."
+    - flag <player> selcopypaste.redo:<[redo]> expire:1h
+
+selredo_command:
+    type: command
+    debug: false
+    name: selredo
+    usage: /selredo
+    description: Redoes your last undone paste.
+    permission: dscript.selredo
+    aliases:
+    - credo
+    script:
+    - if !<player.has_flag[selcopypaste.redo]>:
+        - narrate "<&[error]>You have nothing to redo."
+        - stop
+    - define to_redo <player.flag[selcopypaste.redo]>
+    - flag <player> selcopypaste.redo:!
+    - if !<schematic[selcopy_backup_<[to_redo.id]>].exists>:
+        - narrate "<&[error]>The server has restarted since your last undo, cannot redo."
+        - stop
+    - narrate <&[base]>Redoing...
+    - ~schematic paste name:selcopy_backup_<[to_redo.id]> <[to_redo.location]> delayed entities max_delay_ms:25
+    - schematic unload name:selcopy_backup_<[to_redo.id]>
+    - narrate "<&[base]>Redone. Warning: not currently an option to undo again."
