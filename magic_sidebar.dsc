@@ -79,14 +79,14 @@ magic_sidebar_lines_proc:
                 - define end <[end].sub[<[line].strip_color.length>]>
                 - repeat <[line].length> as:charpos:
                     - if <[line].char_at[<[charpos]>]> == <&ss>:
-                        - define end <[end].add[2]>
+                        - define end:+:2
                     - if <[end]> < <[charpos]>:
                         - repeat stop
                 - define line "<[start_color]><[line].substring[<[index]>]> <&f><[line].substring[0,<[end]>]>"
             - else:
                 - repeat <[line].length> as:charpos:
                     - if <[line].char_at[<[charpos]>]> == <&ss>:
-                        - define end <[end].add[2]>
+                        - define end:+:2
                     - if <[end]> < <[charpos]>:
                         - repeat stop
                 - define line <[start_color]><[line].substring[<[index]>,<[end]>]>

@@ -63,7 +63,7 @@ multinpc_command:
             - case trait:
                 - define initial <player.tab_completions[<context.raw_args>]>
     - if !<[initial].exists>:
-        - define initial "<player.tab_completions[npc <context.raw_args>]>"
+        - define initial <player.tab_completions[npc <context.raw_args>]>
     - determine <[result].filter[starts_with[<context.args.last||>]].include[<[initial]>]>
     script:
     - if <context.args.is_empty> || <context.args.first> == help:
@@ -137,7 +137,7 @@ multinpc_command:
             - if <player.flag[multinpc_selection].is_empty||true>:
                 - narrate "<&[base]>You don't have any NPCs currently selected."
                 - stop
-            - define formatted "<player.flag[multinpc_selection].parse_tag[<&[emphasis]><[parse_value].id> <&[base]>(<&[emphasis]><[parse_value].name><&[base]>)].formatted>"
+            - define formatted <player.flag[multinpc_selection].parse_tag[<&[emphasis]><[parse_value].id> <&[base]>(<&[emphasis]><[parse_value].name><&[base]>)].formatted>
             - narrate "<&[base]>You have <&[emphasis]><player.flag[multinpc_selection].size><&[base]> NPCs selected: <[formatted]>"
         - case save:
             - if <context.args.size> == 1:

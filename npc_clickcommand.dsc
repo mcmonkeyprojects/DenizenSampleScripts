@@ -39,7 +39,7 @@ npc_command_assignment:
         on assignment:
         - trigger name:click state:true
         on click:
-        - foreach "<npc.flag[commands].random.split[ - ]>" as:command:
+        - foreach <npc.flag[commands].random.split[ - ]> as:command:
             - if <[command].starts_with[player:]>:
                 - execute as_player <[command].after[player:].parsed>
             - else if <[command].starts_with[op:]>:

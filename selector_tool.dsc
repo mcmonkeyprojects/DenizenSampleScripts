@@ -189,9 +189,9 @@ selector_tool_status_task:
     - debug error "Improperly called"
     cuboid:
     - define cuboid <player.flag[seltool_selection]>
-    - define min "<&[emphasis]><[cuboid].min.xyz.replace_text[,].with[<&[base]>, <&[emphasis]>]><&[base]>"
-    - define max "<&[emphasis]><[cuboid].max.xyz.replace_text[,].with[<&[base]>, <&[emphasis]>]><&[base]>"
-    - define size "<&[emphasis]><[cuboid].size.xyz.replace_text[,].with[<&[base]>, <&[emphasis]>]><&[base]>"
+    - define min <&[emphasis]><[cuboid].min.xyz.replace_text[,].with[<&[base]>, <&[emphasis]>]><&[base]>
+    - define max <&[emphasis]><[cuboid].max.xyz.replace_text[,].with[<&[base]>, <&[emphasis]>]><&[base]>
+    - define size <&[emphasis]><[cuboid].size.xyz.replace_text[,].with[<&[base]>, <&[emphasis]>]><&[base]>
     - define volume <&[emphasis]><[cuboid].volume><&[base]>
     - define message "<&[base]>Cuboid selection: from <[min]> to <[max]> (size <[size]>, volume <[volume]>)"
     - actionbar <[message]>
@@ -207,8 +207,8 @@ selector_tool_status_task:
         - playeffect effect:block_marker special_data:glass at:<[cuboid].with_min[<[cuboid].min.with_z[<[center].z>]>].with_max[<[cuboid].max.with_z[<[center].z>]>].outline.parse[center]> offset:0 targets:<player> visibility:64
     ellipsoid:
     - define ellipsoid <player.flag[seltool_selection]>
-    - define loc "<&[emphasis]><[ellipsoid].location.block.xyz.replace_text[.0].replace_text[,].with[<&[base]>, <&[emphasis]>]><&[base]>"
-    - define size_text "<&[emphasis]><[ellipsoid].size.block.xyz.replace_text[.0].replace_text[,].with[<&[base]>, <&[emphasis]>]><&[base]>"
+    - define loc <&[emphasis]><[ellipsoid].location.block.xyz.replace_text[.0].replace_text[,].with[<&[base]>, <&[emphasis]>]><&[base]>
+    - define size_text <&[emphasis]><[ellipsoid].size.block.xyz.replace_text[.0].replace_text[,].with[<&[base]>, <&[emphasis]>]><&[base]>
     - define message "<&[base]>Ellipsoid selection: at <[loc]>, size <[size_text]>"
     - actionbar <[message]>
     - playeffect effect:flame at:<[ellipsoid].shell> offset:0 targets:<player>

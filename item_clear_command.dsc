@@ -75,7 +75,7 @@ itemclear_command:
     - flag player itemclear_itemsets.<[gen_id]>:<[sets]> expire:<[expire]>
     - clickable itemclear_viewset_task def.set_id:<[gen_id]> def.set_number:0 save:clickable until:<[expire]>
     - narrate "<&[base]>Removed <[itemdata].size.custom_color[emphasis]> dropped item stacks (<[itemdata].parse[quantity].sum.custom_color[emphasis]> total items)."
-    - narrate "<&[base]><element[<&[emphasis]><underline>Click here to view the items].on_click[<entry[clickable].command>]>."
+    - narrate <&[base]><element[<&[emphasis]><underline>Click here to view the items].on_click[<entry[clickable].command>]>.
 
 itemclear_viewset_task:
     type: task
@@ -96,10 +96,10 @@ itemclear_viewset_task:
                     - clickable itemclear_viewset_task def.set_id:<[set_id]> def.set_number:<[num]> save:clickable until:<[expire]>
                     - define options:->:[<element[<[num]>].on_click[<entry[clickable].command>]>]
                 - flag player itemclear_itemoptlist.<[set_id]>:<[options]> expire:<[expire]>
-            - narrate "<&[emphasis]><underline><[options].separated_by[<&[base]>, <&[emphasis]><underline>]>"
+            - narrate <&[emphasis]><underline><[options].separated_by[<&[base]>, <&[emphasis]><underline>]>
             - stop
         - define set_number 1
     - define list <[data].get[<[set_number]>]>
-    - define inventory "<inventory[generic[size=54;title=Item Clear History]]>"
+    - define inventory <inventory[generic[size=54;title=Item Clear History]]>
     - inventory set o:<[list]> d:<[inventory]>
     - inventory open d:<[inventory]>
