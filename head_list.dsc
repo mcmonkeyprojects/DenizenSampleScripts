@@ -15,7 +15,7 @@
 # Installation:
 # - Put the script in your scripts folder.
 # - Add a list of heads to plugins/Denizen/data/head_list.yml (key name 'heads', list of maps with keys 'title', 'uuid', 'value')
-# If you need a heads list, here's a list file of about 35 thousand heads from minecraft-heads.com: https://cdn.discordapp.com/attachments/351925110866968576/830475926981705768/head_list.yml
+# If you need a heads list, here's a list file of about 35 thousand heads from minecraft-heads.com: https://gist.githubusercontent.com/mcmonkey4eva/23fc6034bf282a2ae163f5b3526481f5/raw/88784db98f9a267bc0f46b24d3ab83fd482b1922/head_list.yml
 # - Restart server (or reload and then '/ex run heads_list_load')
 #
 # Usage:
